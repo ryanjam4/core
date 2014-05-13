@@ -7,4 +7,4 @@ cd core
 python manage.py syncdb
 sudo netstat -plnt
 echo $$
-python manage.py runserver 0.0.0.0:8000
+sh /home/tim/core/runserver.sh &
