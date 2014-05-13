@@ -8,6 +8,7 @@ from models import UserProfile, AccessLog, Problem, Goal, ToDo, Guideline, TextN
 import traceback
 from django.contrib.auth.decorators import login_required
 import json
+import os
 #import pymedtermino.snomedct
 #pymedtermino.snomedct.done()
 class AccessLogMiddleware(object):
