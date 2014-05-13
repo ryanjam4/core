@@ -604,7 +604,7 @@ $.get('/get_problems/{{ patient.id }}/', function (data) {
 });   
 }
     updateProblems();
-    $(document).on('onchange', '.submit_data', function() {
+    $(document).on('change', '.submit_data', function() {
          var parent_id = $(this).attr('parent');
 
     var type = 'mark_parent';
