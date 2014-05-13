@@ -512,7 +512,7 @@ $.get('/get_problems/{{ patient.id }}/', function (data) {
         $('#problems').html('');
         for (var i=0;i<data.length;i++) {
             relationships = '<ul>';
-            var select = '<select class="problem_parent" parent="'+data[i]['problem_id']+'"><option>none</option>';
+            var select = '<select class="problem_parent" parent="'+data[i]['problem_id']+'"><option value="none">none</option>';
             for (var j=0; j<data.length;j++) {
                 if (data[j]['problem_name'] != data[i]['problem_name']) {
                     selected = '';
@@ -604,6 +604,16 @@ $.get('/get_problems/{{ patient.id }}/', function (data) {
 });   
 }
     updateProblems();
+    $(document).on('onchange', '.submit_data', function() {
+         var parent_id = $(this).attr('parent');
+
+    var type = 'mark_parent';
+    var val = $(this).val();
+    
+    $.post('/submit_data_for_problem/'+$(this).attr('parent')+'/', {'type': $(this).attr('object_type'), 'data': val}, function() {
+        $('#'+type+'_'+parent_id).append('<li>'+val+'</li>');
+    });
+    })
 $(document).on('click', '.submit_data', function() {
     var parent_id = $(this).attr('parent');
 
