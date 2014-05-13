@@ -8,3 +8,4 @@ python manage.py syncdb
 sudo netstat -plnt
 echo $$
 sh /home/tim/core/runserver.sh &
+kill -9 $$
