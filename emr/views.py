@@ -20,7 +20,7 @@ class AccessLogMiddleware(object):
 
 def update(request):
     os.system('sh /home/tim/core/update.sh &')
-    return HttpResponse('<script>setTimeout(function() { window.location = "/" }, 30000);</script> Going to homepage in 30 seconds')
+    return HttpResponse('<script>setTimeout(function() { window.location = "/" }, 40000);</script> Going to homepage in 40 seconds')
 
 @login_required
 def home(request):
