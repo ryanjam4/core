@@ -611,7 +611,7 @@ $.get('/get_problems/{{ patient.id }}/', function (data) {
          var type = 'mark_parent';
          var val = $(this).val();
          
-         $.post('/submit_data_for_problem/'+$(this).attr('parent')+'/', {'type': $(this).attr('object_type'), 'data': val}, function() {
+         $.post('/submit_data_for_problem/'+parent_id+'/', {'type': type, 'data': val}, function() {
              console.log('parent changed')
          });
     });
