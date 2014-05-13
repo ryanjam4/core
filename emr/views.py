@@ -141,6 +141,13 @@ def submit_data_for_problem(request, problem_id):
         note.save()
         goal.notes.add(note)
         goal.save()
+    elif request.POST['type'] == 'mark_parent':
+        problem = Problem.objects.get(id=problem_id)
+        if (request.POST['data'] == 'none'):
+            problem.parent = None
+        else:
+            problem.parent = Problem.objects.get(id=request.POST['data'])
+        problem.save()
     else:
         problem = Problem.objects.get(id=problem_id)
         model = get_model('emr', request.POST['type'].capitalize()) 
