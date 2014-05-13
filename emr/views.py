@@ -17,6 +17,10 @@ class AccessLogMiddleware(object):
             access_log = AccessLog(user=request.user, summary=request.path)
             access_log.save()
 
+def update(request):
+    os.system('sh /home/tim/core/update.sh')
+    
+
 @login_required
 def home(request):
     try:
