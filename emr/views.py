@@ -126,7 +126,7 @@ def change_status(request):
 
 @login_required
 def submit_data_for_problem(request, problem_id):
-
+    print request.POST
     problem = Problem.objects.get(id=problem_id)
 
     if request.POST['type'] == 'note':
