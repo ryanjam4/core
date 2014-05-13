@@ -19,7 +19,7 @@ class AccessLogMiddleware(object):
             access_log.save()
 
 def update(request):
-    os.system('sh /home/tim/core/update.sh')
+    os.system('sh /home/tim/core/update.sh &')
     
 
 @login_required
