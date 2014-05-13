@@ -582,6 +582,8 @@ $.get('/get_problems/{{ patient.id }}/', function (data) {
                 todos += '<li><input type="checkbox" attr="todo" id="'+data[i]['todos'][j]['id']+'" '+checked+'/>'+data[i]['todos'][j]['todo']+'</li>';
             }
             todos += '</ul>';
+            
+            // Notes: both the physian and the patient have their own note space for documenting the problem.  A physician can only edit the physician's note, and a physician can ONLY view the patient's note.  A patient can ONLY view the physician's note, and a patient can edit a patient note.  The most recent version of a note is read from database each time the problem is visited.
             notes = '<table id="note_'+data[i]['problem_id']+'">';
             current_note = '';
             if (data[i]['notes']['by_physician'].length > 0) {
@@ -590,9 +592,11 @@ $.get('/get_problems/{{ patient.id }}/', function (data) {
             notes += '<tr><td colspan="2"><strong>Add:</strong> <textarea id="note_input_'+data[i]['problem_id']+'" value="'+current_note+'">'+current_note+'</textarea><input type="button" value="Submit" parent="'+data[i]['problem_id']+'" target="note_input_'+data[i]['problem_id']+'" object_type="note" class="submit_data" /></td></tr>';
             notes += '<tr><th>By physician</th><th>By patient</th></tr>';
             for (var j=0;j<data[i]['notes'].length;j++) {
-                notes += '<tr><td colspan="2">(by '+data[i]['notes'][j]['by']+') '+data[i]['notes'][j]['note']+'</td></tr>';
+                notes += '<tr><td colspan="5">(by '+data[i]['notes'][j]['by']+') '+data[i]['notes'][j]['note']+'</td></tr>';
             }
             notes += '</table>';
+            
+            
             var image_form = '<form action="/upload_image_to_problem/'+data[i]['problem_id']+'/" method="post" enctype="multipart/form-data"><label for="file">File:</label><input type="file" name="file" id="file"><input type="submit" name="submit" value="Submit"></form>';
             var images = '<ul>';
             for (var j=0;j<data[i]['images'].length;j++) {
@@ -734,6 +738,11 @@ if (annyang) {
 });
 
 </script>
+<!-- Colors are associated with problems based on their control state
+     green=controlled
+     red= not controlled
+-->
+     
 <style>
 .true {
 background:green;
