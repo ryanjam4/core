@@ -116,7 +116,7 @@ ROOT_URLCONF = 'emr.urls'
 WSGI_APPLICATION = 'emr.wsgi.application'
 
 TEMPLATE_DIRS = (
-    '/home/tim/emr/templates/',
+    os.path.join(BASE_DIR, 'templates'),
 )
 
 INSTALLED_APPS = (
