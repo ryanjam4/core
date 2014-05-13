@@ -605,15 +605,16 @@ $.get('/get_problems/{{ patient.id }}/', function (data) {
 }
     updateProblems();
     $(document).on('change', '.submit_data', function() {
+         console.log('submitting new parent');
          var parent_id = $(this).attr('parent');
 
-    var type = 'mark_parent';
-    var val = $(this).val();
-    
-    $.post('/submit_data_for_problem/'+$(this).attr('parent')+'/', {'type': $(this).attr('object_type'), 'data': val}, function() {
-        $('#'+type+'_'+parent_id).append('<li>'+val+'</li>');
+         var type = 'mark_parent';
+         var val = $(this).val();
+         
+         $.post('/submit_data_for_problem/'+$(this).attr('parent')+'/', {'type': $(this).attr('object_type'), 'data': val}, function() {
+             console.log('parent changed')
+         });
     });
-    })
 $(document).on('click', '.submit_data', function() {
     var parent_id = $(this).attr('parent');
 
