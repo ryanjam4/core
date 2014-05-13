@@ -1,5 +1,8 @@
 Hi {{ request.user.get_full_name }}. Your role is {{ role }} | <a href="/admin/">Admin</a>
 {% if role == 'admin' %}
+<style>
+    body {background:yellow;}
+</style>
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script>
 var unregistered = [];
