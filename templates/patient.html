@@ -770,6 +770,11 @@ display:none;
 <div id="debug"></div>
 {% if request.user.id != patient.id %}<a href="/">Return to main page</a> | <a href="/admin/auth/user/{{ patient.id }}/">Admin</a> | <a href="/logout/">Logout</a> | {{ request.user }}{% endif %}
 <h2>{{ patient.get_full_name }} {{ patient.age }}</h2>
+
+{% if patient_profile.portrait_image %}<img src="{{ patient_profile.portrait_image.url }}" style="max-width:50%; max-height:25%;" /><br/>{% endif %}
+
+
+
 <h3>Problems</h3>
 <div id="add_problem_div"><strong>Add problem:</strong> <input type="text" value="Problem name" default="Problem name" id="problem_name" /> <input type="text" id="concept_id" default="Concept id" value="Concept id" /> <input type="button" id="addProblem" value="Submit" />
 <div id="results"></div>
