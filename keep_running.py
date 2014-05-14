@@ -2,7 +2,7 @@ while True:
     import os
     import time
     print 'Netstat'
-    output = os.popen('cd /home/tim/; netstat -lnt | grep 8000').read()
+    output = os.popen('cd /; netstat -lnt | grep 8000').read()
     if output == '':
         print 'Sleeping 20 seconds'
         time.sleep(20)
