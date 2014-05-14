@@ -600,7 +600,7 @@ $.get('/get_problems/{{ patient.id }}/', function (data) {
             if (data[i]['notes']['by_patient'].length > 0) {
                 current_patient_note = data[i]['notes']['by_patient'][0]['note'];
             }
-            notes += '<tr><td colspan="2"><strong>Add:</strong> <textarea id="note_input_'+data[i]['problem_id']+'" value="'+current_physician_note+'">'+current_note+'</textarea><input type="button" value="Submit" parent="'+data[i]['problem_id']+'" target="note_input_'+data[i]['problem_id']+'" object_type="note" class="submit_data" /></td></tr>';
+            notes += '<tr><td colspan="2"><strong>Add:</strong> <textarea id="note_input_'+data[i]['problem_id']+'" value="'+current_physician_note+'">'+current_physician_note+'</textarea><input type="button" value="Submit" parent="'+data[i]['problem_id']+'" target="note_input_'+data[i]['problem_id']+'" object_type="note" class="submit_data" /></td></tr>';
             notes += '<tr><th>By physician</th><th>By patient</th></tr>';
             notes += '<tr><td>'+current_physician_note+'</td><td>'+current_patient_note+'</td></tr>';
             //for (var j=0;j<data[i]['notes'].length;j++) {
