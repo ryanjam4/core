@@ -101,7 +101,22 @@ def view_patient(request, user_id):
 
 @login_required
 def get_problems(request, user_id):
-    problems = [{'problem_id': problem.id, 'effected_by': problem.parent.id if problem.parent else None, 'affects': [{'problem_id': g.id, 'problem_name': g.problem_name} for g in problem.get_children()], 'problem_name': problem.problem_name, 'images': [g.image.url for g in PatientImage.objects.filter(problem=problem)], 'guidelines': [{'guideline': g.guideline, 'reference_url': g.reference_url} for g in Guideline.objects.filter(concept_id=problem.concept_id)], 'is_controlled': problem.is_controlled, 'is_authenticated': problem.authenticated, 'is_active': problem.is_active, 'goals': [{'id': g.id, 'goal': g.goal, 'accomplished': g.accomplished, 'notes': [{'by': n.by, 'note': n.note} for n in g.notes.all()]} for g in Goal.objects.filter(problem=problem, accomplished=False)], 'todos': [{'todo': g.todo, 'id': g.id, 'accomplished': g.accomplished} for g in ToDo.objects.filter(problem=problem, accomplished=False)], 'notes': {'by_physician': [{'note': g.note} for g in TextNote.objects.filter(problem=problem, by__in=['physician', 'admin']).order_by('-datetime')], 'by_patient': [{'note': g.note} for g in TextNote.objects.filter(problem=problem, by='patient').order_by('-datetime')], 'all': [{'by': g.by, 'note': g.note} for g in TextNote.objects.filter(problem=problem)]}} for problem in Problem.objects.filter(patient=user_id)]
+    problems = []
+    for problem in Problem.objects.filter(patient=user_id):
+        d = {}
+        d['problem_id'] = problem.id
+        d['effected_by'] = problem.parent.id if problem.parent else None
+        d['affects'] = [{'problem_id': g.id, 'problem_name': g.problem_name} for g in problem.get_children()]
+        d['problem_name'] = problem.problem_name
+        d['images'] = [g.image.url for g in PatientImage.objects.filter(problem=problem)]
+        d['guidelines'] = [{'guideline': g.guideline, 'reference_url': g.reference_url} for g in Guideline.objects.filter(concept_id=problem.concept_id)]
+        d['is_controlled'] = problem.is_controlled
+        d['is_authenticated'] = problem.authenticated
+        d['is_active'] = problem.is_active
+        d['goals'] = [{'id': g.id, 'goal': g.goal, 'is_controlled': g.is_controlled, 'accomplished': g.accomplished, 'notes': [{'by': n.by, 'note': n.note} for n in g.notes.all()]} for g in Goal.objects.filter(problem=problem, accomplished=False)]
+        d['todos'] = [{'todo': g.todo, 'id': g.id, 'accomplished': g.accomplished} for g in ToDo.objects.filter(problem=problem, accomplished=False)]
+        d['notes'] = {'by_physician': [{'note': g.note} for g in TextNote.objects.filter(problem=problem, by__in=['physician', 'admin']).order_by('-datetime')], 'by_patient': [{'note': g.note} for g in TextNote.objects.filter(problem=problem, by='patient').order_by('-datetime')], 'all': [{'by': g.by, 'note': g.note} for g in TextNote.objects.filter(problem=problem)]}
+        problems.append(d)
     return HttpResponse(json.dumps(problems), content_type="application/json")
 
 @login_required
