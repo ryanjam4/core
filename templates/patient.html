@@ -592,7 +592,7 @@ $.get('/get_problems/{{ patient.id }}/', function (data) {
             
             // Notes: both the physian and the patient have their own note space for documenting the problem.  A physician can only edit the physician's note, and a physician can ONLY view the patient's note.  A patient can ONLY view the physician's note, and a patient can edit a patient note.  The most recent version of a note is read from database each time the problem is visited.
             notes = '<table id="note_'+data[i]['problem_id']+'">';
-            var role = "{% user_role == admin %}physician{% else %}{{ user_role }}{% endif %}";
+            var role = "{% if user_role == admin %}physician{% else %}{{ user_role }}{% endif %}";
             current_physician_note = '';
             if (data[i]['notes']['by_physician'].length > 0) {
                 current_physician_note = data[i]['notes']['by_physician'][0]['note'];
