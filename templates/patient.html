@@ -658,7 +658,7 @@ $(document).on('click', '.submit_data', function() {
 
     var type = $(this).attr('object_type');
     var val = $('#'+$(this).attr('target')).val();
-    
+    if (val != '') { // send to server }
     $.post('/submit_data_for_problem/'+$(this).attr('parent')+'/', {'type': $(this).attr('object_type'), 'data': val}, function() {
         $('#'+type+'_'+parent_id).append('<li>'+val+'</li>');
     });
