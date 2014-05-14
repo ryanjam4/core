@@ -661,7 +661,7 @@ $(document).on('click', '.submit_data', function() {
     if (val != '') { // send to server }
     $.post('/submit_data_for_problem/'+$(this).attr('parent')+'/', {'type': $(this).attr('object_type'), 'data': val}, function() {
         $('#'+type+'_'+parent_id).append('<li>'+val+'</li>');
-    });
+    });}
 });
 if (annyang) {
   // Let's define our first command. First the text we expect, and then the function it should call
