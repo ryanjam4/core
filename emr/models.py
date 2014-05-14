@@ -77,6 +77,7 @@ class Goal(models.Model):
     is_controlled = models.BooleanField(default=False)
     accomplished = models.BooleanField(default=False)
     notes = models.ManyToManyField(TextNote, blank=True)
+    start_date = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return '%s %s' % (unicode(self.patient), unicode(self.problem))
