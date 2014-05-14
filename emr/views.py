@@ -94,7 +94,7 @@ def view_patient(request, user_id):
     user = User.objects.get(id=user_id)
     if (not is_patient(user)):
         return HttpResponse("Error: this user isn't a patient")
-    context = {'patient': user, 'patient_profile': UserProfile.objects.get(user=user), 'problems': Problem.objects.filter(patient=user)}
+    context = {'patient': user, 'user_role': UserProfile.objects.get(user=request.user).role, 'patient_profile': UserProfile.objects.get(user=user), 'problems': Problem.objects.filter(patient=user)}
     context.update({'pain_avatars': PainAvatar.objects.filter(patient=user).order_by('-datetime')})
     context = RequestContext(request, context)
     return render_to_response("patient.html", context)
