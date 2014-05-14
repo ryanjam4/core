@@ -79,10 +79,10 @@ def is_patient(user):
         profile = UserProfile.objects.get(user=user)
         return profile.role == 'patient'
     except:
-        return false
+        return False
     
 
-#@login_required
+@login_required
 def list_users(request):
 
     users = [{'is_patient': is_patient(user), 'username': user.username, 'firstname': user.first_name, 'lastname': user.last_name, 'id': user.id} for user in User.objects.all().order_by('first_name')]
