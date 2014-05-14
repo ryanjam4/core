@@ -579,7 +579,7 @@ $.get('/get_problems/{{ patient.id }}/', function (data) {
             todos = '<ul id="todo_'+data[i]['problem_id']+'">';
             todos += '<li><strong>Add:</strong> <input type="text" id="todo_input_'+data[i]['problem_id']+'" /><input type="button" value="Submit" parent="'+data[i]['problem_id']+'" target="todo_input_'+data[i]['problem_id']+'" object_type="todo" class="submit_data" /></li>';
 
-            for (var j=0;j<data[i]['todos'].length > 0;j++) {
+            for (var j=0;j<data[i]['todos'].length;j++) {
                 if (data[i]['todos'][j]['accomplished'] == true) {
                     checked = ' checked ';
                 } else {
