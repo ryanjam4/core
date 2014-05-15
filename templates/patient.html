@@ -570,7 +570,7 @@ $.get('/get_problems/{{ patient.id }}/', function (data) {
                     notes += '<li>(by '+data[i]['goals'][j]['notes'][k]['by']+') '+data[i]['goals'][j]['notes'][k]['note']+'</li>';
                 }
                 notes += '</ul>';
-                goals += '<li><input type="checkbox" attr="goal" id="'+" class="'+data[i]['is_controlled']+" '+checked+'/>'+data[i]['goals'][j]['goal']+notes+'</li>';
+                goals += '<li><input type="checkbox" attr="goal" id="'+data[i]['goals'][j]['id']+'" class="'+data[i]['is_controlled']+'" '+checked+'/>'+data[i]['goals'][j]['goal']+notes+'</li>';
             }
             goals += '</ul>';
             
