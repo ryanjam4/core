@@ -783,6 +783,9 @@ if (annyang) {
          $(this).val('Start encounter');
          $(this).attr('id', 'start_encounter');
     });
+    $('#view_encounter').click(function() {
+         window.location = '/encounter/'+window.encounter_id+'/';
+    });
 });
 
 </script>
@@ -814,7 +817,7 @@ display:none;
 
 {% if patient_profile.portrait_image %}<img src="{{ patient_profile.portrait_image.url }}" style="max-width:50%; max-height:25%;" /><br/>{% endif %}
 
-<div><input type="button" id="start_encounter" value="Start encounter" /></div>
+<div><input type="button" id="start_encounter" value="Start encounter" /><input type="button" id="view_encounter" value="View encounter" /></div>
 
 <h3>Problems</h3>
 <div id="add_problem_div"><strong>Add problem:</strong> <input type="text" value="Problem name" default="Problem name" id="problem_name" /> <input type="text" id="concept_id" default="Concept id" value="Concept id" /> <input type="button" id="addProblem" value="Submit" />
