@@ -32,7 +32,7 @@ class Encounter(models.Model):
     patient = models.ForeignKey(User, related_name="patient")
     starttime = models.DateTimeField(auto_now_add=True)
     stoptime = models.DateTimeField(null=True, blank=True)
-    notes = generic.GenericRelation('Note',
+    events = generic.GenericRelation('EncounterEvent',
         content_type_field='content_type',
         object_id_field='object_id'
     )
@@ -40,14 +40,14 @@ class Encounter(models.Model):
     def __unicode__(self):
         return 'Patient: %s Time: %s' % (self.patient.get_full_name(), self.physician.get_full_name())
 
-class Note(models.Model):
+class EncounterEvent(models.Model):
     datetime = models.DateTimeField(auto_now_add=True)
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
-    note = generic.GenericForeignKey('content_type', 'object_id')
+    event = generic.GenericForeignKey('content_type', 'object_id')
 
     def __unicode__(self):
-        return unicode(self.note)
+        return unicode(self.event)
 
 class TextNote(models.Model):
     BY_CHOICES = (
