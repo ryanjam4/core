@@ -735,6 +735,8 @@ if (annyang) {
             $('#concept_id').val($('#concept_id').attr('default'));
             $('#results').html('');
         });
+        $.post('/save_encounter_event/', {'summary': 'Physician added problem "'+$('#problem_name').val()+'"', 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
+
     });
     $('body').on('click', '.show_problem', function () {
         window.current_problem = $(this).attr('problem');
