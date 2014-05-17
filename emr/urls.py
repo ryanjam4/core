@@ -34,4 +34,5 @@ urlpatterns = patterns('',
     url(r'^upload_image_to_problem/(?P<problem_id>\d+)/$', 'emr.views.upload_image_to_problem'),
     url(r'^submit_data_for_problem/(?P<problem_id>\d+)/$', 'emr.views.submit_data_for_problem'),
     url(r'^update/$', 'emr.views.update'),
+    url(r'^create_encounter/(?P<patient_id>\d+)/$', 'emr.views.create_encounter'),
 )
