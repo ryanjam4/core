@@ -499,6 +499,8 @@ $('#reset').click(function() {
         if ( $(this).attr('attr') == 'is_controlled' ) {
             $("#problem_"+$(this).attr('id')).removeClass();
             $("#problem_"+$(this).attr('id')).addClass($(this).is(':checked').toString());
+            $.post('/save_encounter_event/', {'summary': 'Physician changed "is controlled" for problem "'+$('#problem_'+$(this).attr('id')).text()+'" to '+$(this).is(':checked'), 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
+
         }
         if ($(this).attr('attr') == 'goal' || $(this).attr('attr') == 'todo') {
             var target = $(this).attr('attr');
