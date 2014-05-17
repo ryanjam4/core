@@ -4,7 +4,7 @@ from django.db.models.loading import get_model
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.template import RequestContext
-from models import UserProfile, AccessLog, Problem, Goal, ToDo, Guideline, TextNote, PatientImage
+from models import UserProfile, AccessLog, Problem, Goal, ToDo, Guideline, TextNote, PatientImage, Encounter, EncounterEvent
 import traceback
 from django.contrib.auth.decorators import login_required
 import json
