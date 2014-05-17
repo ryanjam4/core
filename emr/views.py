@@ -214,6 +214,15 @@ def create_encounter(request, patient_id):
     encounter.save()
     return HttpResponse(encounter.id, content_type="text/plain")
 
+@login_required
+def stop_encounter(request, encounter_id):
+    from datetime import datetime
+    encounter = Encounter.objects.get(id=encounter_id)
+    encounter.stoptime = datetime.now()
+    encounter.save()
+    return HttpResponse('saved', content_type="text/plain")
+
+
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
