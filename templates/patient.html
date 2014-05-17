@@ -665,6 +665,8 @@ $(document).on('click', '.submit_data', function() {
     $.post('/submit_data_for_problem/'+$(this).attr('parent')+'/', {'type': $(this).attr('object_type'), 'data': val}, function() {
         $('#'+type+'_'+parent_id).append('<li>'+val+'</li>');
     });}
+    $.post('/save_encounter_event/', {'summary': 'Physician added "'+$(this).attr('object_type')+'" to "": '+val, 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
+
 });
 if (annyang) {
   // Let's define our first command. First the text we expect, and then the function it should call
