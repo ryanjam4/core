@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.contenttypes.generic import GenericTabularInline
-from models import UserProfile, AccessLog, Encounter, Note, TextNote, Problem, Goal, ToDo, Guideline, PatientImage
+from models import UserProfile, AccessLog, Encounter, EncounterEvent, TextNote, Problem, Goal, ToDo, Guideline, PatientImage
 from django.contrib.auth.models import User
 admin.site.disable_action('delete_selected')
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
@@ -32,8 +32,8 @@ admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 import reversion
 
-class NoteInline(GenericTabularInline):
-    model = Note
+class EncounterEventInline(GenericTabularInline):
+    model = EncounterEvent
 
 class UserProfileAdmin(reversion.VersionAdmin):
 
@@ -47,14 +47,14 @@ admin.site.register(AccessLog, AccessLogAdmin)
 from genericadmin.admin import GenericAdminModelAdmin
 class EncounterAdmin(reversion.VersionAdmin, GenericAdminModelAdmin):
 
-    inlines = [NoteInline]
+    inlines = [EncounterEventInline]
 
 admin.site.register(Encounter, EncounterAdmin)
 
-class NoteAdmin(reversion.VersionAdmin, GenericAdminModelAdmin):
+class EncounterEventAdmin(reversion.VersionAdmin, GenericAdminModelAdmin):
     pass
 
-admin.site.register(Note, NoteAdmin)
+admin.site.register(EncounterEvent, EncounterEventAdmin)
 
 class ProblemAdmin(reversion.VersionAdmin):
     pass
