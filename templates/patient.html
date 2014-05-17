@@ -769,6 +769,14 @@ if (annyang) {
         $('#concept_id').val($(this).attr('concept_id'));
         $(document).scrollTop($('#add_problem_div').offset().top );
     });
+    $('#start_encounter').click(function() {
+         $.get('/create_encounter/{{ patient.id }}/', function (data) {
+              window.encounter = true;
+              window.encounter_id = data;
+         });
+         $(this).val('Stop encounter');
+         $(this).attr('id', 'stop_encounter');
+    });
 });
 
 </script>
@@ -800,7 +808,7 @@ display:none;
 
 {% if patient_profile.portrait_image %}<img src="{{ patient_profile.portrait_image.url }}" style="max-width:50%; max-height:25%;" /><br/>{% endif %}
 
-
+<div><input type="button" id="start_encounter" value="start_encounter" /></div>
 
 <h3>Problems</h3>
 <div id="add_problem_div"><strong>Add problem:</strong> <input type="text" value="Problem name" default="Problem name" id="problem_name" /> <input type="text" id="concept_id" default="Concept id" value="Concept id" /> <input type="button" id="addProblem" value="Submit" />
