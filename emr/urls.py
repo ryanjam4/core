@@ -36,5 +36,5 @@ urlpatterns = patterns('',
     url(r'^update/$', 'emr.views.update'),
     url(r'^create_encounter/(?P<patient_id>\d+)/$', 'emr.views.create_encounter'),
     url(r'^stop_encounter/(?P<encounter_id>\d+)/$', 'emr.views.stop_encounter'),
-    url(r'^save_encounter_event/$', 'emr.views.save_encounter_event'),
+    url(r'^save_encounter_event/$', 'emr.views.save_event_summary'),
 )
