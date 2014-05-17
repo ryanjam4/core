@@ -493,6 +493,7 @@ $('#reset').click(function() {
         window.location = '/pain/create_pain_avatar/';
     });
 });
+// ENCOUNTER POST FOR CLICKS.
     $(document).on("change", "input:checkbox", function(e) {
         //alert($(this).is(':checked')+$(this).attr('id'));
         if ( $(this).attr('attr') == 'is_controlled' ) {
@@ -740,7 +741,7 @@ if (annyang) {
         $(this).removeClass();
         $(this).addClass('hide_problem');
         
-        // THIS IS THE ENCOUNTER REFERENCE
+        // THIS IS THE ENCOUNTER REFERENCE: 
         $.post('/save_encounter_event/', {'summary': 'Physician clicked on problem: "'+$('#problem_'+$(this).attr('problem')).text()+'"', 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
     });
     $('body').on('click', '.hide_problem', function () {
