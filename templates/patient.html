@@ -739,6 +739,7 @@ if (annyang) {
         $(this).val('Hide problem');
         $(this).removeClass();
         $(this).addClass('hide_problem');
+        $.post('/save_encounter_event/', {'summary': 'Physician clicked on problem: "'+$('#problem_'+$(this).attr('problem'))+'"', 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
     });
     $('body').on('click', '.hide_problem', function () {
         window.current_problem = null;
