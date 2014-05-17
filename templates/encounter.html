@@ -1,6 +1,6 @@
 <table>
 <tr><th>Time</th><th>Summary</th></tr>
 {% for event in events %}
-<tr><td>{{ event.datetime }}</td><td>{{ event.summary }}</td>
+<tr><td>{{ event.datetime }}</td><td>{{ event.event.summary }}</td>
 {% endfor %}
 </table>
