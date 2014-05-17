@@ -777,6 +777,11 @@ if (annyang) {
          $(this).val('Stop encounter');
          $(this).attr('id', 'stop_encounter');
     });
+    $('#stop_encounter').click(function() {
+         $.get('/stop_encounter/'+window.encounter_id+'/');
+         $(this).val('Start encounter');
+         $(this).attr('id', 'start_encounter');
+    });
 });
 
 </script>
