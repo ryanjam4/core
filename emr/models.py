@@ -32,10 +32,11 @@ class Encounter(models.Model):
     patient = models.ForeignKey(User, related_name="patient")
     starttime = models.DateTimeField(auto_now_add=True)
     stoptime = models.DateTimeField(null=True, blank=True)
-    events = generic.GenericRelation('EncounterEvent',
-        content_type_field='content_type',
-        object_id_field='object_id'
-    )
+    #events = generic.GenericRelation('EncounterEvent',
+    #    content_type_field='content_type',
+    #    object_id_field='object_id'
+    #)
+    events = models.ManyToManyField('EncounterEvent')
 
     def __unicode__(self):
         return 'Patient: %s Time: %s' % (self.patient.get_full_name(), self.physician.get_full_name())
