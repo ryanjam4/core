@@ -5,7 +5,7 @@ rm -rf core
 git clone https://github.com/ryanjam4/core.git
 cd core
 python manage.py syncdb
-sudo netstat -plnt
+#sudo netstat -plnt
 #echo $$
 #sh /home/tim/core/runserver.sh &
 #kill -9 $$
