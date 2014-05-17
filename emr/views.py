@@ -222,6 +222,19 @@ def stop_encounter(request, encounter_id):
     encounter.save()
     return HttpResponse('saved', content_type="text/plain")
 
+from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.models import ContentType
+@login_required 
+def save_event_summary(request):
+    event_summary = EventSummary(patient=User.objects.get(id=request.POST['patient_id']), summary=request.POST['summary'])
+    event_summary.save()
+    encounter = Encounter.objects.get(id=request.POST['encounter_id'])
+    ctype = ContentType.objects.get_for_model(event_summary)
+    encounter_event = EncounterEvent(content_type=ctype, object_id=event_summary.id)
+    encounter_event.save()
+    encounter.events.add(encounter_event)
+    encounter.save()
+    return HttpResponse('')
 
 from django.core.urlresolvers import reverse
 from django.contrib import messages
