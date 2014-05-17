@@ -236,6 +236,11 @@ def save_event_summary(request):
     encounter.save()
     return HttpResponse('')
 
+def encounter(request, encounter_id):
+    context = {'events': Encounter.objects.get(id=encounter_id).events.all().order_by('datetime')}
+    context = RequestContext(request, context)
+    return render_to_response("encounter.html", context)
+
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
