@@ -41,6 +41,7 @@ class Encounter(models.Model):
         return 'Patient: %s Time: %s' % (self.patient.get_full_name(), self.physician.get_full_name())
 
 class Note(models.Model):
+    datetime = models.DateTimeField(auto_now_add=True)
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
     note = generic.GenericForeignKey('content_type', 'object_id')
