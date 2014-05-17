@@ -48,6 +48,14 @@ class EncounterEvent(models.Model):
 
     def __unicode__(self):
         return unicode(self.event)
+        
+class EventSummary(models.Model):
+    patient = models.ForeignKey(User)
+    datetime = models.DateTimeField(auto_now_add=True)
+    summary = models.TextField()
+
+    def __unicode__(self):
+        return '%s %s' % (unicode(self.patient), self.summary)
 
 class TextNote(models.Model):
     BY_CHOICES = (
