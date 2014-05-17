@@ -208,6 +208,12 @@ def upload_image_to_problem(request, problem_id):
         context = RequestContext(request, {})
         return render_to_response('upload_image_to_problem.html', context)
 
+@login_required
+def create_encounter(request, patient_id):
+    encounter = Encounter(patient=User.objects.get(id=patient_id), physician=User.objects.get(id=request.user.id))
+    encounter.save()
+    return HttpResponse(encounter.id, content_type="text/plain")
+
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
