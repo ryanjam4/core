@@ -575,7 +575,7 @@ $.get('/get_problems/{{ patient.id }}/', function (data) {
                     notes += '<li>(by '+data[i]['goals'][j]['notes'][k]['by']+') '+data[i]['goals'][j]['notes'][k]['note']+'</li>';
                 }
                 notes += '</ul>';
-                goals += '<li class="'+data[i]['goals'][j]['is_controlled']+'"><input type="checkbox" attr="goal" id="'+data[i]['goals'][j]['id']+'" '+checked+'/>'+data[i]['goals'][j]['goal']+'<input type="button" class="show_goal" value="Show goal" target="goal_notes_'+data[i]['goals'][j]['id']+'" goal="'+data[i]['goals'][j]['id']+'" />'+notes+'</li>';
+                goals += '<li id="goal_'+data[i]['goals'][j]['id']+'" class="'+data[i]['goals'][j]['is_controlled']+'"><input type="checkbox" attr="goal" id="'+data[i]['goals'][j]['id']+'" '+checked+'/>'+data[i]['goals'][j]['goal']+'<input type="button" class="show_goal" value="Show goal" target="goal_notes_'+data[i]['goals'][j]['id']+'" goal="'+data[i]['goals'][j]['id']+'" />'+notes+'</li>';
             }
             goals += '</ul>';
             
