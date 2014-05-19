@@ -132,6 +132,11 @@ def change_status(request):
         value = True if request.POST['value'] == 'true' else False
         setattr(goal,'accomplished', value)
         goal.save()
+    elif request.POST['target'] == 'goal_is_controlled':
+        goal = Goal.objects.get(id=request.POST['id'])
+        value = True if request.POST['value'] == 'true' else False
+        setattr(goal,'is_controlled', value)
+        goal.save()
     elif request.POST['target'] == 'todo':
         todo = ToDo.objects.get(id=request.POST['id'])
         value = True if request.POST['value'] == 'true' else False
