@@ -502,8 +502,10 @@ $('#reset').click(function() {
             $.post('/save_encounter_event/', {'summary': 'Physician changed "is controlled" for problem "'+$('#problem_'+$(this).attr('id')).text()+'" to '+$(this).is(':checked'), 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
 
         }
-        if ($(this).attr('attr') == 'goal' || $(this).attr('attr') == 'todo') {
+        if ($(this).attr('attr') == 'goal' || $(this).attr('attr') == 'todo' || $(this).attr('attr') == 'goal_is_controlled') {
             var target = $(this).attr('attr');
+            $("#goal_"+$(this).attr('id')).removeClass();
+            $("#goal_"+$(this).attr('id')).addClass($(this).is(':checked').toString());
         } else {
             var target = 'problem';
         }
