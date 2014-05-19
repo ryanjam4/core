@@ -573,7 +573,7 @@ $.get('/get_problems/{{ patient.id }}/', function (data) {
                     notes += '<li>(by '+data[i]['goals'][j]['notes'][k]['by']+') '+data[i]['goals'][j]['notes'][k]['note']+'</li>';
                 }
                 notes += '</ul>';
-                goals += '<li class="'+data[i]['goals'][j]['is_controlled']+'"><input type="checkbox" attr="goal" id="'+data[i]['goals'][j]['id']+'" '+checked+'/>'+data[i]['goals'][j]['goal']+'<input type="button" value="Show goal" />'+notes+'</li>';
+                goals += '<li class="'+data[i]['goals'][j]['is_controlled']+'"><input type="checkbox" attr="goal" id="'+data[i]['goals'][j]['id']+'" '+checked+'/>'+data[i]['goals'][j]['goal']+'<input type="button" value="Show goal" target="goal_notes_'+data[i]['goals'][j]['id']+'" goal="'+data[i]['goals'][j]['id']+'" />'+notes+'</li>';
             }
             goals += '</ul>';
             
@@ -750,12 +750,31 @@ if (annyang) {
         // THIS IS THE ENCOUNTER REFERENCE: 
         $.post('/save_encounter_event/', {'summary': 'Physician clicked on problem: "'+$('#problem_'+$(this).attr('problem')).text()+'"', 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
     });
+    $('body').on('click', '.show_goal', function () {
+        //window.current_problem = $(this).attr('problem');
+        $('.goal_notes').hide();
+        $('#'+$(this).attr('target')).show();
+        $(document).scrollTop( $('#goal_'+$(this).attr('goal')).offset().top );  
+        $(this).val('Hide goal');
+        $(this).removeClass();
+        $(this).addClass('hide_goal');
+        
+        // THIS IS THE ENCOUNTER REFERENCE: 
+        $.post('/save_encounter_event/', {'summary': 'Physician clicked on problem: "'+$('#problem_'+$(this).attr('problem')).text()+'"', 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
+    });
     $('body').on('click', '.hide_problem', function () {
         window.current_problem = null;
         $('.problem_data').hide();
         $(this).val('Show problem');
         $(this).removeClass();
         $(this).addClass('show_problem');
+    });
+    $('body').on('click', '.hide_goal', function () {
+        //window.current_problem = null;
+        $('.goal_notes').hide();
+        $(this).val('Show goal');
+        $(this).removeClass();
+        $(this).addClass('show_goal');
     });
     var timeout;
     $('#problem_name').keyup(function() {
