@@ -648,6 +648,11 @@ $.get('/get_problems/{{ patient.id }}/', function (data) {
 }
     updateProblems();
     $(document).on('change', '.problem_parent', function() {
+         
+         window.location = '/pateint/'+$(this).val()+'/';
+         
+    });
+    $(document).on('change', '.change_patient', function() {
          console.log('submitting new parent');
          var parent_id = $(this).attr('parent');
 
@@ -839,7 +844,7 @@ background:#FFF;
 </style>
 </head>
 <body>
-<select>
+<select id="change_patient">
      
      {% for p in shared_patients %}
      <option value="{{ p.id }}">{{ p.get_full_name }}</option>
