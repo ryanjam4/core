@@ -661,16 +661,7 @@ $.get('/get_problems/{{ patient.id }}/', function (data) {
          
     });
     $(document).on('change', '#change_patient', function() {
-         console.log('submitting new parent');
-         var parent_id = $(this).attr('parent');
-
-         var type = 'mark_parent';
-         var val = $(this).val();
-         
-         $.post('/submit_data_for_problem/'+parent_id+'/', {'type': type, 'data': val}, function() {
-             console.log('parent changed')
-         });
-         window.location = '/pateint/'+$(this).val()+'/';
+         window.location = '/patient/'+$(this).val()+'/';
          
     });
 $(document).on('click', '.submit_data', function() {
