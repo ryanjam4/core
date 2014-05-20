@@ -4,7 +4,7 @@ from django.db.models.loading import get_model
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.template import RequestContext
-from models import UserProfile, AccessLog, Problem, Goal, ToDo, Guideline, TextNote, PatientImage, Encounter, EncounterEvent, EventSummary
+from models import UserProfile, AccessLog, Problem, Goal, ToDo, Guideline, TextNote, PatientImage, Encounter, EncounterEvent, EventSummary, Sharing
 import traceback
 from django.contrib.auth.decorators import login_required
 import json
@@ -106,6 +106,8 @@ def view_patient(request, user_id):
     context = {'patient': user, 'user_role': UserProfile.objects.get(user=request.user).role, 'patient_profile': UserProfile.objects.get(user=user), 'problems': Problem.objects.filter(patient=user)}
     context.update({'pain_avatars': PainAvatar.objects.filter(patient=user).order_by('-datetime')})
     context['encounters'] = Encounter.objects.filter(patient=user).order_by('-starttime')
+    if (request.user == user):
+        context['shared_patients'] = list(set([i.patient for i in Sharing.objects.filter(other_patient=user)]))
     context = RequestContext(request, context)
     return render_to_response("patient.html", context)
 
