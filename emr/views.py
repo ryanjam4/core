@@ -122,7 +122,7 @@ def get_problems(request, user_id):
     
     user = User.objects.get(id=user_id)
     # allowed viewers are the patient, admin/physician, and other patients the patient has shared to
-    if (not (request.user == user) or (role in ['admin', 'physician']) or (user in list(set([i.patient for i in Sharing.objects.filter(other_patient=user)])))):
+    if (not (request.user == user) or (role in ['admin', 'physician']) or (request.user in list(set([i.patient for i in Sharing.objects.filter(other_patient=user)])))):
         return HttpResponse("Not allowed")
     if (not is_patient(user)):
         return HttpResponse("Error: this user isn't a patient")
