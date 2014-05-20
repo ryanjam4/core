@@ -845,7 +845,7 @@ background:#FFF;
 </head>
 <body>
 <select id="change_patient">
-     
+     <option></option>
      {% for p in shared_patients %}
      <option value="{{ p.id }}">{{ p.get_full_name }}</option>
      {% endfor %}
