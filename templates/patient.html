@@ -652,7 +652,7 @@ $.get('/get_problems/{{ patient.id }}/', function (data) {
          window.location = '/pateint/'+$(this).val()+'/';
          
     });
-    $(document).on('change', '.change_patient', function() {
+    $(document).on('change', '#change_patient', function() {
          console.log('submitting new parent');
          var parent_id = $(this).attr('parent');
 
