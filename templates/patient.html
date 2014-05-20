@@ -649,7 +649,15 @@ $.get('/get_problems/{{ patient.id }}/', function (data) {
     updateProblems();
     $(document).on('change', '.problem_parent', function() {
          
-         window.location = '/pateint/'+$(this).val()+'/';
+        console.log('submitting new parent');
+         var parent_id = $(this).attr('parent');
+
+         var type = 'mark_parent';
+         var val = $(this).val();
+         
+         $.post('/submit_data_for_problem/'+parent_id+'/', {'type': type, 'data': val}, function() {
+             console.log('parent changed')
+         });
          
     });
     $(document).on('change', '#change_patient', function() {
@@ -662,6 +670,8 @@ $.get('/get_problems/{{ patient.id }}/', function (data) {
          $.post('/submit_data_for_problem/'+parent_id+'/', {'type': type, 'data': val}, function() {
              console.log('parent changed')
          });
+         window.location = '/pateint/'+$(this).val()+'/';
+         
     });
 $(document).on('click', '.submit_data', function() {
     var parent_id = $(this).attr('parent');
