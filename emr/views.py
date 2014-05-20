@@ -130,7 +130,7 @@ def get_problems(request, user_id):
     if ((request.user == user) or (role in ['admin', 'physician'])):
         problems = Problem.objects.filter(patient=user_id)
     else:
-        problems = [i.item for i in Sharing.objects.filter(content_type=ContentType.objects.get(app_label="emr", model="Problem"), patient=user_id, other_patient=request.user)]
+        problems = [i.item for i in Sharing.objects.filter(content_type=ContentType.objects.get(app_label="emr", model="problem"), patient=user_id, other_patient=request.user)]
     print problems
     for problem in problems:
         d = {}
