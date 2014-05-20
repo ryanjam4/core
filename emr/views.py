@@ -118,8 +118,20 @@ def view_patient(request, user_id):
 
 @login_required
 def get_problems(request, user_id):
+    role = UserProfile.objects.get(user=request.user).role
+    
+    user = User.objects.get(id=user_id)
+    # allowed viewers are the patient, admin/physician, and other patients the patient has shared to
+    if (not (request.user == user) or (role in ['admin', 'physician']) or (user in list(set([i.patient for i in Sharing.objects.filter(other_patient=user)])))):
+        return HttpResponse("Not allowed")
+    if (not is_patient(user)):
+        return HttpResponse("Error: this user isn't a patient")
     problems = []
-    for problem in Problem.objects.filter(patient=user_id):
+    if ((request.user == user) or (role in ['admin', 'physician'])):
+        problems = Problem.objects.filter(patient=user_id)
+    else:
+        problems = [i.item for i in Sharing.objects.filter(patient=user_id, other_patient=request.user)]
+    for problem in problems:
         d = {}
         d['problem_id'] = problem.id
         d['effected_by'] = problem.parent.id if problem.parent else None
