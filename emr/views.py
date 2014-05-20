@@ -20,7 +20,16 @@ class AccessLogMiddleware(object):
 
 def update(request):
     os.system('sh /home/tim/core/update.sh &')
-    return HttpResponse('<title>Update</title><script>setTimeout(function() { window.location = "/" }, 60000);</script> Going to homepage in 60 seconds')
+    html = """
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <title>Update</title>
+    <script>
+    var seconds = 60;
+    setInterval(function() { $('#time_left').text(seconds); seconds -= 1; }, 1000);
+    setTimeout(function() { window.location = "/" }, 60000);
+    </script> Going to homepage in <span id="time_left">60</span> seconds
+    """
+    return HttpResponse(html)
 
 @login_required
 def home(request):
