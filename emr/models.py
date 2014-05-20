@@ -126,8 +126,8 @@ class PatientImage(models.Model):
         return '%s' % (unicode(self.patient))
         
 class Sharing(models.Model):
-    patient = models.ForeignKey(Patient, related_name='patient')
-    other_patient = models.ForeignKey(Patient, related_name='other_patient')
+    patient = models.ForeignKey(User, related_name='patient')
+    other_patient = models.ForeignKey(User, related_name='other_patient')
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
     item = generic.GenericForeignKey('content_type', 'object_id')
