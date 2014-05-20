@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.contenttypes.generic import GenericTabularInline
-from models import UserProfile, AccessLog, Encounter, EncounterEvent, TextNote, Problem, Goal, ToDo, Guideline, PatientImage
+from models import UserProfile, AccessLog, Encounter, EncounterEvent, TextNote, Problem, Goal, ToDo, Guideline, PatientImage, Sharing
 from django.contrib.auth.models import User
 admin.site.disable_action('delete_selected')
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
@@ -83,3 +83,7 @@ admin.site.register(Guideline, GuidelineAdmin)
 class PatientImageAdmin(reversion.VersionAdmin):
     pass
 admin.site.register(PatientImage, PatientImageAdmin)
+class SharingAdmin(Sharing, SharingAdmin):
+    pass
+   
+admin.site.register(Sharing, SharingAdmin)
