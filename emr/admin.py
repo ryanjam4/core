@@ -83,7 +83,4 @@ admin.site.register(Guideline, GuidelineAdmin)
 class PatientImageAdmin(reversion.VersionAdmin):
     pass
 admin.site.register(PatientImage, PatientImageAdmin)
-class SharingAdmin(Sharing, SharingAdmin):
-    pass
-   
-admin.site.register(Sharing, SharingAdmin)
+admin.site.register(Sharing)
