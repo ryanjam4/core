@@ -128,8 +128,9 @@ class PatientImage(models.Model):
 class Sharing(models.Model):
     patient = models.ForeignKey(Patient, related_name='patient')
     other_patient = models.ForeignKey(Patient, related_name='other_patient')
-    type = models.CharField(max_length=10)
-    id = models.PositiveIntegerField()
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.PositiveIntegerField()
+    item = generic.GenericForeignKey('content_type', 'object_id')
     relationship_to_patient = models.CharField(max_length=20, blank=True)
     relationship_to_patient_snomed = models.CharField(max_length=20, blank=True)
     relationship_to_other_patient = models.CharField(max_length=20, blank=True)
