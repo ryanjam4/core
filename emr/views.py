@@ -148,7 +148,7 @@ def get_problems(request, user_id):
         d['is_controlled'] = problem.is_controlled
         d['is_authenticated'] = problem.authenticated
         d['is_active'] = problem.is_active
-        d['goals'] = [{'id': g.id, 'goal': g.goal, 'is_controlled': g.is_controlled, 'accomplished': g.accomplished, 'notes': {'by_physician': [{'note': n.note} for n in g.notes.filter(by__in=['physician', 'admin']).order_by('-datetime')]}} for g in Goal.objects.filter(problem=problem, accomplished=False)]
+        d['goals'] = [{'id': g.id, 'goal': g.goal, 'is_controlled': g.is_controlled, 'accomplished': g.accomplished, 'notes': {'by_physician': [{'note': n.note} for n in g.notes.filter(by__in=['physician', 'admin']).order_by('-datetime')], 'by_patient': [{'note': n.note} for n in g.notes.filter(by__in=['patient']).order_by('-datetime')]}} for g in Goal.objects.filter(problem=problem, accomplished=False)]
         d['todos'] = [{'todo': g.todo, 'id': g.id, 'accomplished': g.accomplished} for g in ToDo.objects.filter(problem=problem, accomplished=False)]
         d['notes'] = {'by_physician': [{'note': g.note} for g in TextNote.objects.filter(problem=problem, by__in=['physician', 'admin']).order_by('-datetime')], 'by_patient': [{'note': g.note} for g in TextNote.objects.filter(problem=problem, by='patient').order_by('-datetime')], 'all': [{'by': g.by, 'note': g.note} for g in TextNote.objects.filter(problem=problem)]}
         problems.append(d)
