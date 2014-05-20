@@ -575,6 +575,45 @@ $.get('/get_problems/{{ patient.id }}/', function (data) {
                     notes += '<li>(by '+data[i]['goals'][j]['notes'][k]['by']+') '+data[i]['goals'][j]['notes'][k]['note']+'</li>';
                 }
                 notes += '</ul>';
+                notes = '<table id="note_'+data[i]['problem_id']+'">';
+                 var role = "{% if user_role == 'admin' %}physician{% else %}{{ user_role }}{% endif %}";
+                 current_physician_note = '';
+                 if (data[i]['goals'][j]['notes']['by_physician'].length > 0) {
+                     current_physician_note = data[i]['goals'][j]['notes']['by_physician'][0]['note'];
+                     if (role == 'physician') {
+                         current_physician_note = '<textarea id="note_input_'+data[i]['problem_id']+'" value="'+current_physician_note+'">'+current_physician_note+'</textarea><input type="button" value="Submit" parent="'+data[i]['problem_id']+'" target="note_input_'+data[i]['problem_id']+'" object_type="note" class="submit_data" />';
+                          
+                     }
+                 } else {
+                     if (role == 'physician') {
+                         current_physician_note = '<textarea id="note_input_'+data[i]['problem_id']+'" value="'+current_physician_note+'">'+current_physician_note+'</textarea><input type="button" value="Submit" parent="'+data[i]['problem_id']+'" target="note_input_'+data[i]['problem_id']+'" object_type="note" class="submit_data" />';
+                          
+                     }
+                      
+                 }
+                 current_patient_note = '';
+                 if (data[i]['goals'][j]['notes']['by_patient'].length > 0) {
+                     current_patient_note = data[i]['goals'][j]['notes']['by_patient'][0]['note'];
+                     if (role == 'patient') {
+                         current_patient_note = '<textarea id="note_input_'+data[i]['problem_id']+'" value="'+current_patient_note+'">'+current_patient_note+'</textarea><input type="button" value="Submit" parent="'+data[i]['problem_id']+'" target="note_input_'+data[i]['problem_id']+'" object_type="note" class="submit_data" />';
+                          
+                     }
+                 } else {
+                     if (role == 'patient') {
+                         current_patient_note = '<textarea id="note_input_'+data[i]['problem_id']+'" value="'+current_patient_note+'">'+current_patient_note+'</textarea><input type="button" value="Submit" parent="'+data[i]['problem_id']+'" target="note_input_'+data[i]['problem_id']+'" object_type="note" class="submit_data" />';
+                          
+                     } 
+                      
+                 }
+                 
+                 //notes += '<tr><td colspan="2"><strong>Add:</strong> <textarea id="note_input_'+data[i]['problem_id']+'" value="'+current_physician_note+'">'+current_physician_note+'</textarea><input type="button" value="Submit" parent="'+data[i]['problem_id']+'" target="note_input_'+data[i]['problem_id']+'" object_type="note" class="submit_data" /></td></tr>';
+                 notes += '<tr><th>By physician</th><th>By patient</th></tr>';
+                 notes += '<tr><td>'+current_physician_note+'</td><td>'+current_patient_note+'</td></tr>';
+                 //for (var j=0;j<data[i]['notes'].length;j++) {
+                 //    notes += '<tr><td colspan="5">(by '+data[i]['notes'][j]['by']+') '+data[i]['notes'][j]['note']+'</td></tr>';
+                 //}
+                 notes += '</table>';
+                 
                 goals += '<li id="goal_'+data[i]['goals'][j]['id']+'" class="'+data[i]['goals'][j]['is_controlled']+'"><input type="checkbox" attr="goal" id="'+data[i]['goals'][j]['id']+'" '+checked+'/>'+data[i]['goals'][j]['goal']+'<input type="button" class="show_goal" value="Show goal" target="goal_notes_'+data[i]['goals'][j]['id']+'" goal="'+data[i]['goals'][j]['id']+'" />'+notes+'</li>';
             }
             goals += '</ul>';
