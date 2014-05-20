@@ -575,7 +575,7 @@ $.get('/get_problems/{{ patient.id }}/', function (data) {
                     notes += '<li>(by '+data[i]['goals'][j]['notes'][k]['by']+') '+data[i]['goals'][j]['notes'][k]['note']+'</li>';
                 }
                 notes += '</ul>';
-                notes = '<table id="note_'+data[i]['problem_id']+'">';
+                notes = '<div id="goal_notes_'+data[i]['goals'][j]['id']+'" class="goal_notes"><input type="checkbox" attr="goal_is_controlled" id="'+data[i]['goals'][j]['id']+'" '+checked+'/> <strong>Is controlled</strong><br/><table id="note_'+data[i]['problem_id']+'">';
                  var role = "{% if user_role == 'admin' %}physician{% else %}{{ user_role }}{% endif %}";
                  current_physician_note = '';
                  if (data[i]['goals'][j]['notes']['by_physician'].length > 0) {
@@ -612,7 +612,7 @@ $.get('/get_problems/{{ patient.id }}/', function (data) {
                  //for (var j=0;j<data[i]['notes'].length;j++) {
                  //    notes += '<tr><td colspan="5">(by '+data[i]['notes'][j]['by']+') '+data[i]['notes'][j]['note']+'</td></tr>';
                  //}
-                 notes += '</table>';
+                 notes += '</table></div>';
                  
                 goals += '<li id="goal_'+data[i]['goals'][j]['id']+'" class="'+data[i]['goals'][j]['is_controlled']+'"><input type="checkbox" attr="goal" id="'+data[i]['goals'][j]['id']+'" '+checked+'/>'+data[i]['goals'][j]['goal']+'<input type="button" class="show_goal" value="Show goal" target="goal_notes_'+data[i]['goals'][j]['id']+'" goal="'+data[i]['goals'][j]['id']+'" />'+notes+'</li>';
             }
