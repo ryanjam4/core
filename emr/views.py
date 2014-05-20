@@ -128,13 +128,13 @@ def get_problems(request, user_id):
         return HttpResponse("Error: this user isn't a patient")
     problems = []
     if ((request.user == user) or (role in ['admin', 'physician'])):
-        problems = Problem.objects.filter(patient=user_id)
+        problems_query = Problem.objects.filter(patient=user_id)
     else:
         #problems = [Problem.objects.get(id=i.item['id']) for i in Sharing.objects.filter(content_type=ContentType.objects.get(app_label="emr", model="problem"), patient=user_id, other_patient=request.user)]
-        problems = [i.item for i in Sharing.objects.filter(content_type=ContentType.objects.get(app_label="emr", model="problem"), patient=user_id, other_patient=request.user)]
+        problems_query = [i.item for i in Sharing.objects.filter(content_type=ContentType.objects.get(app_label="emr", model="problem"), patient=user_id, other_patient=request.user)]
 
     print problems
-    for problem in problems:
+    for problem in problems_query:
         print problem
         print type(problem)
         #print vars(problem)
