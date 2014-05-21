@@ -276,6 +276,7 @@ def save_event_summary(request):
     encounter.save()
     return HttpResponse('')
 
+@login_required
 def encounter(request, encounter_id):
     context = {'events': Encounter.objects.get(id=encounter_id).events.all().order_by('datetime'), 'patient': Encounter.objects.get(id=encounter_id).patient}
     context = RequestContext(request, context)
