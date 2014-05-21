@@ -27,6 +27,12 @@ class AccessLog(models.Model):
     def __unicode__(self):
         return '%s %s %s' % (self.user.username, self.datetime, self.summary)
 
+def get_path(instance, filename):
+    try:
+        return '%s/%s/%s' % (instance.patient.id, instance.problem.id, filename)
+    except:
+        return '%s/%s' % (instance.patient.id, filename)
+ 
 class Encounter(models.Model):
     physician = models.ForeignKey(User, related_name="physician")
     patient = models.ForeignKey(User, related_name="patient")
@@ -111,11 +117,6 @@ class Guideline(models.Model):
 
     def __unicode__(self):
         return '%s %s' % (self.concept_id, self.guideline)
-
-def get_path(instance, filename):
-    if instance.problem:
-        return '%s/%s/%s' % (instance.patient.id, instance.problem.id, filename)
-    return '%s/%s' % (instance.patient.id, filename)
 
 class PatientImage(models.Model):
     patient = models.ForeignKey(User)
