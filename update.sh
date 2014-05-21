@@ -4,7 +4,7 @@ cd
 rm -rf core
 git clone https://github.com/ryanjam4/core.git
 cd core
-cd static && git clone https://github.com/nusofthq/Recordmp3js.git
+mkdir static && cd static && git clone https://github.com/nusofthq/Recordmp3js.git
 
 python manage.py syncdb
 #sudo netstat -plnt
