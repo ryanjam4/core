@@ -37,7 +37,8 @@ class Encounter(models.Model):
     #    object_id_field='object_id'
     #)
     events = models.ManyToManyField('EncounterEvent')
-
+    audio = models.FileField(upload_to=get_path, blank=True) 
+    
     def __unicode__(self):
         return 'Patient: %s Time: %s' % (self.patient.get_full_name(), self.physician.get_full_name())
 
