@@ -1,5 +1,5 @@
 <title>Small Brain</title>
-Hi {{ request.user.get_full_name }}. Your role is {{ role }} | <a href="/admin/">Admin</a>
+Hi {{ request.user.get_full_name }}. Your role is {{ role }} | <a href="/admin/">Admin</a> | <a href="/logout/">Logout</a>
 {% if role == 'admin' %}
 <style>
      body {background:white;     font:15px arial,sans-serif;}
