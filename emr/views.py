@@ -179,6 +179,10 @@ def get_problems(request, user_id):
         d['notes'] = {'by_physician': [{'note': g.note} for g in TextNote.objects.filter(problem=problem, by__in=['physician', 'admin']).order_by('-datetime')], 'by_patient': [{'note': g.note} for g in TextNote.objects.filter(problem=problem, by='patient').order_by('-datetime')], 'all': [{'by': g.by, 'note': g.note} for g in TextNote.objects.filter(problem=problem)]}
         problems['problems'].append(d)
         problems['concept_ids'][problem.concept_id] = problem.id
+        import pymedtermino.snomedct
+        #return [i.__dict__ for i in SNOMEDCT.search(query)]
+        # only disorders and finding
+        d['concept_ids'][str(problem.concept_id)+'P'] = [i.__dict__ for i in pymedtermino.snomedct.CONCEPT[int(problem.concept_id)].parents if '(disorder)' in i.__dict__['term']]
     return HttpResponse(json.dumps(problems), content_type="application/json")
 
 @login_required
