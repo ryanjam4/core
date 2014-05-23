@@ -27,10 +27,17 @@ from django.contrib.auth import authenticate, login, logout
 def login_user(request):
     logout(request)
     username = password = ''
+    
+          
+
     if request.POST:
-        username = request.POST['username']
+        email = request.POST['email']
         password = request.POST['password']
-        user = authenticate(username=username, password=password)
+        u,created = User.objects.get_or_create(email, email)
+        if created:
+            u.password = password
+            u.save()
+        user = authenticate(username=email, password=password)
         if user is not None:
             if user.is_active:
                 login(request, user)
