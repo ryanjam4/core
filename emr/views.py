@@ -183,7 +183,11 @@ def get_problems(request, user_id):
         import pymedtermino.snomedct
         #return [i.__dict__ for i in SNOMEDCT.search(query)]
         # only disorders and finding
-        problems['concept_ids'][str(problem.concept_id)+'P'] = [i.__dict__ for i in pymedtermino.snomedct.SNOMEDCT[int(problem.concept_id)].parents if '(disorder)' in i.__dict__['term']]
+        for j in [i.__dict__ for i in pymedtermino.snomedct.SNOMEDCT[int(problem.concept_id)].parents]:
+            problems['concept_ids'][j['code']] = problem.id
+        for j in [i.__dict__ for i in pymedtermino.snomedct.SNOMEDCT[int(problem.concept_id)].children]:
+            problems['concept_ids'][j['code']] = problem.id
+        #problems['concept_ids'][str(problem.concept_id)+'P'] = [i.__dict__ for i in pymedtermino.snomedct.SNOMEDCT[int(problem.concept_id)].parents if '(disorder)' in i.__dict__['term']]
     return HttpResponse(json.dumps(problems), content_type="application/json")
 
 @login_required
