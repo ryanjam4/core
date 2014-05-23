@@ -1,3 +1,6 @@
+# Install security auditing
+sudo apt-get install acct
+
 # For Mac Mini install Wifi drivers
 sudo apt-get update
 sudo apt-get install linux-headers-generic linux-headers-`uname -r`
