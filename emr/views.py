@@ -152,7 +152,7 @@ def get_problems(request, user_id):
         return HttpResponse("Not allowed")
     if (not is_patient(user)):
         return HttpResponse("Error: this user isn't a patient")
-    problems = []
+    problems = {'problems': [], 'concept_ids': {}}
     if ((request.user == user) or (role in ['admin', 'physician'])):
         problems_query = Problem.objects.filter(patient=user_id)
     else:
@@ -177,7 +177,8 @@ def get_problems(request, user_id):
         d['goals'] = [{'id': g.id, 'goal': g.goal, 'is_controlled': g.is_controlled, 'accomplished': g.accomplished, 'notes': {'by_physician': [{'note': n.note} for n in g.notes.filter(by__in=['physician', 'admin']).order_by('-datetime')], 'by_patient': [{'note': n.note} for n in g.notes.filter(by__in=['patient']).order_by('-datetime')]}} for g in Goal.objects.filter(problem=problem, accomplished=False)]
         d['todos'] = [{'todo': g.todo, 'id': g.id, 'accomplished': g.accomplished} for g in ToDo.objects.filter(problem=problem, accomplished=False)]
         d['notes'] = {'by_physician': [{'note': g.note} for g in TextNote.objects.filter(problem=problem, by__in=['physician', 'admin']).order_by('-datetime')], 'by_patient': [{'note': g.note} for g in TextNote.objects.filter(problem=problem, by='patient').order_by('-datetime')], 'all': [{'by': g.by, 'note': g.note} for g in TextNote.objects.filter(problem=problem)]}
-        problems.append(d)
+        problems['problems'].append(d)
+        problems['concept_ids'][problem.concept_id] = problem.id
     return HttpResponse(json.dumps(problems), content_type="application/json")
 
 @login_required
