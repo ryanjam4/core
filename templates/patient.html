@@ -513,7 +513,9 @@ $('#reset').click(function() {
     });
 function updateProblems() {
 $.get('/get_problems/{{ patient.id }}/', function (data) {
-        window.problems = data;
+	window.concept_ids = data.concept_ids;
+	data = data.problems;
+        window.problems = data.problems;
         $('#problems').html('');
         for (var i=0;i<data.length;i++) {
             relationships = '<ul>';
