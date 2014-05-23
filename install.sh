@@ -1,5 +1,6 @@
 # Install security auditing
 sudo apt-get -y install acct
+# See http://www.pointsoftware.ch/howto-bash-audit-command-logger/
 
 # For Mac Mini install Wifi drivers
 sudo apt-get update
