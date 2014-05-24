@@ -44,6 +44,9 @@ def login_user(request):
                 return HttpResponseRedirect('/')
     return render_to_response('login.html', context_instance=RequestContext(request))
 
+from django.contrib.auth.decorators import user_passes_test
+
+@user_passes_test(lambda u: u.is_superuser)
 def update(request):
     os.system('sh /home/tim/core/update.sh &')
     html = """
@@ -143,27 +146,34 @@ def view_patient(request, user_id):
     return render_to_response("patient.html", context)
 
 @login_required
-def get_problems(request, user_id):
-    role = UserProfile.objects.get(user=request.user).role
-    
-    user = User.objects.get(id=user_id)
+def get_patient_data(request, patient_id):
+    # Find out if user requesting the data is admin, physician, or patient
+    role_of_user_requesting_the_data = UserProfile.objects.get(user=request.user).role
+    # Get patient object from patient id
+    patient = User.objects.get(id=patient_id)
     # allowed viewers are the patient, admin/physician, and other patients the patient has shared to
-    if (not ((request.user == user) or (role in ['admin', 'physician']) or (Sharing.objects.filter(patient=user, other_patient=request.user)))):
+    if (not ((request.user == patient) or (role in ['admin', 'physician']) or (Sharing.objects.filter(patient=patient, other_patient=request.user)))):
         return HttpResponse("Not allowed")
-    if (not is_patient(user)):
+    # Right now only users with role == patient have a patient page
+    if (not is_patient(patient)):
         return HttpResponse("Error: this user isn't a patient")
-    problems = {'problems': [], 'concept_ids': {}}
-    if ((request.user == user) or (role in ['admin', 'physician'])):
-        problems_query = Problem.objects.filter(patient=user_id)
+    # We provide the problems, goals, notes, todos
+    # and concept ids of the problems as well as the snomed parents and children of those problems mapped to a problem id
+    # This way we can prevent duplicate problems from being added
+    data = {'problems': [], 'goals': [], 'notes': [], 'todos': [], 'concept_ids': {}}
+    # At this point we know the user is allowed to view this patient. 
+    # Now we have to detrimine what data can be provided to the requesting user
+    # If the user requesting the patient data is the targeted patient or an admin or physician then we know it's OK to provide all the data
+    if ((request.user == patient) or (role_of_user_requesting_the_data in ['admin', 'physician'])):
+        # Get all problems for the patient 
+        problems_query = Problem.objects.filter(patient=patient)
+    # Otherwise the requesting user is only allowed to see some of the patient's info    
     else:
-        #problems = [Problem.objects.get(id=i.item['id']) for i in Sharing.objects.filter(content_type=ContentType.objects.get(app_label="emr", model="problem"), patient=user_id, other_patient=request.user)]
-        problems_query = [i.item for i in Sharing.objects.filter(content_type=ContentType.objects.get(app_label="emr", model="problem"), patient=user_id, other_patient=request.user)]
+        # Get just the problems shared to the user
+        problems_query = [i.item for i in Sharing.objects.filter(content_type=ContentType.objects.get(app_label="emr", model="problem"), patient=patient, other_patient=request.user)]
 
-    print problems
+    
     for problem in problems_query:
-        print problem
-        print type(problem)
-        #print vars(problem)
         d = {}
         d['problem_id'] = problem.id
         d['effected_by'] = problem.parent.id if problem.parent else None
@@ -181,14 +191,11 @@ def get_problems(request, user_id):
         
         problems['concept_ids'][problem.concept_id] = problem.id
         import pymedtermino.snomedct
-        #return [i.__dict__ for i in SNOMEDCT.search(query)]
-        # only disorders and finding
         for j in [i.__dict__ for i in pymedtermino.snomedct.SNOMEDCT[int(problem.concept_id)].parents]:
             problems['concept_ids'][j['code']] = problem.id
         for j in [i.__dict__ for i in pymedtermino.snomedct.SNOMEDCT[int(problem.concept_id)].children]:
             problems['concept_ids'][j['code']] = problem.id
-        #problems['concept_ids'][str(problem.concept_id)+'P'] = [i.__dict__ for i in pymedtermino.snomedct.SNOMEDCT[int(problem.concept_id)].parents if '(disorder)' in i.__dict__['term']]
-    return HttpResponse(json.dumps(problems), content_type="application/json")
+    return HttpResponse(json.dumps(data), content_type="application/json")
 
 @login_required
 def change_status(request):
