@@ -151,7 +151,7 @@ def get_patient_data(request, patient_id):
     # Get patient object from patient id
     patient = User.objects.get(id=patient_id)
     # allowed viewers are the patient, admin/physician, and other patients the patient has shared to
-    if (not ((request.user == patient) or (role in ['admin', 'physician']) or (Sharing.objects.filter(patient=patient, other_patient=request.user)))):
+    if (not ((request.user == patient) or (role_of_user_requesting_the_data in ['admin', 'physician']) or (Sharing.objects.filter(patient=patient, other_patient=request.user)))):
         return HttpResponse("Not allowed")
     # Right now only users with role == patient have a patient page
     if (not is_patient(patient)):
