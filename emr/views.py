@@ -9,8 +9,7 @@ import traceback
 from django.contrib.auth.decorators import login_required
 import json
 import os
-#import pymedtermino.snomedct
-#pymedtermino.snomedct.done()
+
 class AccessLogMiddleware(object):
 
     def process_request(self, request):
@@ -174,6 +173,7 @@ def get_patient_data(request, patient_id):
 
     
     for problem in problems_query:
+        # We store the data for this problem in a dictionary called "d"
         d = {}
         d['problem_id'] = problem.id
         d['effected_by'] = problem.parent.id if problem.parent else None
@@ -187,9 +187,9 @@ def get_patient_data(request, patient_id):
         d['goals'] = [{'id': g.id, 'goal': g.goal, 'is_controlled': g.is_controlled, 'accomplished': g.accomplished, 'notes': {'by_physician': [{'note': n.note} for n in g.notes.filter(by__in=['physician', 'admin']).order_by('-datetime')], 'by_patient': [{'note': n.note} for n in g.notes.filter(by__in=['patient']).order_by('-datetime')]}} for g in Goal.objects.filter(problem=problem, accomplished=False)]
         d['todos'] = [{'todo': g.todo, 'id': g.id, 'accomplished': g.accomplished} for g in ToDo.objects.filter(problem=problem, accomplished=False)]
         d['notes'] = {'by_physician': [{'note': g.note} for g in TextNote.objects.filter(problem=problem, by__in=['physician', 'admin']).order_by('-datetime')], 'by_patient': [{'note': g.note} for g in TextNote.objects.filter(problem=problem, by='patient').order_by('-datetime')], 'all': [{'by': g.by, 'note': g.note} for g in TextNote.objects.filter(problem=problem)]}
-        problems['problems'].append(d)
+        data['problems'].append(d)
         
-        problems['concept_ids'][problem.concept_id] = problem.id
+        data['concept_ids'][problem.concept_id] = problem.id
         import pymedtermino.snomedct
         for j in [i.__dict__ for i in pymedtermino.snomedct.SNOMEDCT[int(problem.concept_id)].parents]:
             problems['concept_ids'][j['code']] = problem.id
@@ -264,21 +264,20 @@ def add_problem(request, patient_id):
     return HttpResponse('added')
 
 @login_required
-def list_terms(request):
+def list_snomed_terms(request):
+    # We list snomed given a query
     query = request.GET['query']
     
     import pymedtermino.snomedct
-    #return [i.__dict__ for i in SNOMEDCT.search(query)]
-    # only disorders and finding
-    results1 = [i.__dict__ for i in pymedtermino.snomedct.SNOMEDCT.search(query) if '(disorder)' in i.__dict__['term']]
-    results1 = sorted(results1, key=lambda x: x["term"])
-    results2 = [i.__dict__ for i in pymedtermino.snomedct.SNOMEDCT.search(query) if '(finding)' in i.__dict__['term']]
-    results2 = sorted(results2, key=lambda x: x["term"])
+    raw_results = pymedtermino.snomedct.SNOMEDCT.search(query)
+    matching_disorders = [i.__dict__ for i in raw_results if '(disorder)' in i.__dict__['term']]
+    matching_disorders = sorted(matching_disorders, key=lambda x: x["term"])
+    matching_findings = [i.__dict__ for i in raw_results if '(finding)' in i.__dict__['term']]
+    matching_findings = sorted(matching_findings, key=lambda x: x["term"])
     results = []
-    results.extend(results1)
-    results.extend(results2)
+    results.extend(matching_disorders)
+    results.extend(matching_findings)
     results = json.dumps(results)
-    #pymedtermino.snomedct.done()
     return HttpResponse(results, content_type="application/json")
 
 @login_required
