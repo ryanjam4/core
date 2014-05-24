@@ -577,7 +577,7 @@ $.get('/get_problems/{{ patient.id }}/', function (data) {
                     notes += '<li>(by '+data[i]['goals'][j]['notes'][k]['by']+') '+data[i]['goals'][j]['notes'][k]['note']+'</li>';
                 }
                 notes += '</ul>';
-                notes = '<div id="goal_notes_'+data[i]['goals'][j]['id']+'" class="goal_notes"><input type="checkbox" attr="goal_is_controlled" id="'+data[i]['goals'][j]['id']+'" '+checked+'/> <strong>Is controlled</strong><br/><table id="note_'+data[i]['problem_id']+'">';
+                notes = '<div id="goal_notes_'+data[i]['goals'][j]['id']+'" class="goal_notes"><strong>Start date:</strong> '+data[i]['goals'][j]['start_date']+'<br/><input type="checkbox" attr="goal" id="'+data[i]['goals'][j]['id']+'" '+checked+'/> <strong>Is accomplished</strong><br/><input type="checkbox" attr="goal_is_controlled" id="'+data[i]['goals'][j]['id']+'" '+checked+'/> <strong>Is controlled</strong><br/><table id="note_'+data[i]['problem_id']+'">';
                  var role = "{% if user_role == 'admin' %}physician{% else %}{{ user_role }}{% endif %}";
                  current_physician_note = '';
                  if (data[i]['goals'][j]['notes']['by_physician'].length > 0) {
