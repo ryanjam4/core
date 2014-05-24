@@ -564,7 +564,7 @@ $.get('/get_problems/{{ patient.id }}/', function (data) {
             
             
             // Goals: A problem may have zero to many associated with it.  Goals are a way for a patient to define and manage activities that they believe will be of value to them as an individual.  Goals are displayed with the red/green control state.  The goals that have not been set to 'accomplished' are displayed in the problem they are related to.  The note associated with a goal is to describe the motivation for adding that goal.  A GOAL DOES NOT HAVE TO BE ASSOCIATED WITH A PROBLEM.
-            goals = '<ul id="goal_'+data[i]['problem_id']+'" title="goal_'+data[i]['problem_id']+'">';
+            goals = '<ul id="goals_'+data[i]['problem_id']+'" title="goal_'+data[i]['problem_id']+'">';
             goals += '<li><strong>Add:</strong> <input type="text" id="goal_input_'+data[i]['problem_id']+'" /><input type="button" value="Submit" parent="'+data[i]['problem_id']+'" target="goal_input_'+data[i]['problem_id']+'" object_type="goal" class="submit_data" /></li>';
             for (var j=0;j<data[i]['goals'].length;j++) {
                 if (data[i]['goals'][j]['accomplished'] == true) {
