@@ -572,7 +572,7 @@ $.get('/get_problems/{{ patient.id }}/', function (data) {
                 } else {
                     checked = '';
                 }
-                notes = '<ul id="goal_notes_'+data[i]['goals'][j]['id']+'" class="goal_notes"><li><input type="checkbox" attr="goal_is_controlled" id="'+data[i]['goals'][j]['id']+'" '+checked+'/> <strong>Is controlled</strong></li><li><strong>Add:</strong> <textarea id="note_input_for_goal_'+data[i]['goals'][j]['id']+'" /><input type="button" value="Submit" parent="'+data[i]['goals'][j]['id']+'" target="note_input_for_goal_'+data[i]['goals'][j]['id']+'" object_type="note_for_goal" class="submit_data" /></li>';
+                notes = '<ul id="goal_notes_'+data[i]['goals'][j]['id']+'" class="goal_notes"><li><strong>Start date:</strong> '+data[i]['goals'][j]['start_date']+'</li><li><input type="checkbox" attr="goal" id="'+data[i]['goals'][j]['id']+'" '+checked+'/> <strong>Is accomplished</strong></li><li><input type="checkbox" attr="goal_is_controlled" id="'+data[i]['goals'][j]['id']+'" '+checked+'/> <strong>Is controlled</strong></li><li><strong>Add:</strong> <textarea id="note_input_for_goal_'+data[i]['goals'][j]['id']+'" /><input type="button" value="Submit" parent="'+data[i]['goals'][j]['id']+'" target="note_input_for_goal_'+data[i]['goals'][j]['id']+'" object_type="note_for_goal" class="submit_data" /></li>';
                 for (var k=0;k<data[i]['goals'][j]['notes'].length;k++) {
                     notes += '<li>(by '+data[i]['goals'][j]['notes'][k]['by']+') '+data[i]['goals'][j]['notes'][k]['note']+'</li>';
                 }
@@ -617,7 +617,7 @@ $.get('/get_problems/{{ patient.id }}/', function (data) {
                  //}
                  notes += '</table></div>';
                  
-                goals += '<li id="goal_'+data[i]['goals'][j]['id']+'" class="'+data[i]['goals'][j]['is_controlled']+'"><strong>Start date:</strong> '+data[i]['goals'][j]['start_date']+'<br/><input type="checkbox" attr="goal" id="'+data[i]['goals'][j]['id']+'" '+checked+'/>'+data[i]['goals'][j]['goal']+'<input type="button" class="show_goal" value="Show goal" target="goal_notes_'+data[i]['goals'][j]['id']+'" goal="'+data[i]['goals'][j]['id']+'" />'+notes+'</li>';
+                goals += '<li id="goal_'+data[i]['goals'][j]['id']+'" class="'+data[i]['goals'][j]['is_controlled']+'">'+data[i]['goals'][j]['goal']+'<input type="button" class="show_goal" value="Show goal" target="goal_notes_'+data[i]['goals'][j]['id']+'" goal="'+data[i]['goals'][j]['id']+'" />'+notes+'</li>';
             }
             goals += '</ul>';
             
