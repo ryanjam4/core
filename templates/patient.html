@@ -716,6 +716,7 @@ $(document).on('click', '.submit_data', function() {
     });}
     $.post('/save_encounter_event/', {'summary': 'Physician added "'+$(this).attr('object_type')+'" to "": '+val, 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
     updateProblems();
+    $(document).scrollTop( $('#problem_'+window.current_problem).offset().top );  
 });
 if (annyang) {
   // Let's define our first command. First the text we expect, and then the function it should call
@@ -830,7 +831,7 @@ if (annyang) {
         //window.current_problem = $(this).attr('problem');
         $('.goal_notes').hide();
         $('#'+$(this).attr('target')).show();
-        $(document).scrollTop( $('#goal_'+$(this).attr('goal')).offset().top );  
+        //$(document).scrollTop( $('#goal_'+$(this).attr('goal')).offset().top );  
         $(this).val('Hide goal');
         $(this).removeClass();
         $(this).addClass('hide_goal');
