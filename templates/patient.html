@@ -717,6 +717,9 @@ $(document).on('click', '.submit_data', function() {
     $.post('/save_encounter_event/', {'summary': 'Physician added "'+$(this).attr('object_type')+'" to "": '+val, 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
     updateProblems();
     console.log('window '+window.current_problem);
+    $('.problem_data').hide();
+    var problem = window.current_problem;
+    $('#problem_'+problem).show();
     $(document).scrollTop( $('#problem_'+window.current_problem).offset().top );  
 });
 if (annyang) {
