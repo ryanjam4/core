@@ -718,7 +718,7 @@ $(document).on('click', '.submit_data', function() {
     updateProblems();
 
     $(document).scrollTop( $('#problem_'+window.current_problem).offset().top );  
-    $('#problem_data_'+window.current_problem).show();
+    setTimeout(function() { $('#problem_data_'+window.current_problem).show(); },5000);
     console.log($('#problem_data_'+window.current_problem).html());
 });
 if (annyang) {
