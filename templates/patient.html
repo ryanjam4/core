@@ -609,8 +609,8 @@ $.get('/get_problems/{{ patient.id }}/', function (data) {
                  }
                  
                  //notes += '<tr><td colspan="2"><strong>Add:</strong> <textarea id="note_input_'+data[i]['problem_id']+'" value="'+current_physician_note+'">'+current_physician_note+'</textarea><input type="button" value="Submit" parent="'+data[i]['problem_id']+'" target="note_input_'+data[i]['problem_id']+'" object_type="note" class="submit_data" /></td></tr>';
-                 notes += '<tr><th>By physician</th><th>By patient</th></tr>';
-                 notes += '<tr><td>'+current_physician_note+'</td><td>'+current_patient_note+'</td></tr>';
+                 //notes += '<tr><th>By physician</th><th>By patient</th></tr>';
+                 notes += current_physician_note;
                  //for (var j=0;j<data[i]['notes'].length;j++) {
                  //    notes += '<tr><td colspan="5">(by '+data[i]['notes'][j]['by']+') '+data[i]['notes'][j]['note']+'</td></tr>';
                  //}
