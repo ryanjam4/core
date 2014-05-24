@@ -188,13 +188,15 @@ def get_patient_data(request, patient_id):
         d['todos'] = [{'todo': g.todo, 'id': g.id, 'accomplished': g.accomplished} for g in ToDo.objects.filter(problem=problem, accomplished=False)]
         d['notes'] = {'by_physician': [{'note': g.note} for g in TextNote.objects.filter(problem=problem, by__in=['physician', 'admin']).order_by('-datetime')], 'by_patient': [{'note': g.note} for g in TextNote.objects.filter(problem=problem, by='patient').order_by('-datetime')], 'all': [{'by': g.by, 'note': g.note} for g in TextNote.objects.filter(problem=problem)]}
         data['problems'].append(d)
-        
-        data['concept_ids'][problem.concept_id] = problem.id
-        import pymedtermino.snomedct
-        for j in [i.__dict__ for i in pymedtermino.snomedct.SNOMEDCT[int(problem.concept_id)].parents]:
-            data['concept_ids'][j['code']] = problem.id
-        for j in [i.__dict__ for i in pymedtermino.snomedct.SNOMEDCT[int(problem.concept_id)].children]:
-            data['concept_ids'][j['code']] = problem.id
+        try:
+            data['concept_ids'][problem.concept_id] = problem.id
+            import pymedtermino.snomedct
+            for j in [i.__dict__ for i in pymedtermino.snomedct.SNOMEDCT[int(problem.concept_id)].parents]:
+                data['concept_ids'][j['code']] = problem.id
+            for j in [i.__dict__ for i in pymedtermino.snomedct.SNOMEDCT[int(problem.concept_id)].children]:
+                data['concept_ids'][j['code']] = problem.id
+        except:
+            pass
     return HttpResponse(json.dumps(data), content_type="application/json")
 
 @login_required
