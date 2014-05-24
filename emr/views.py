@@ -192,9 +192,9 @@ def get_patient_data(request, patient_id):
         data['concept_ids'][problem.concept_id] = problem.id
         import pymedtermino.snomedct
         for j in [i.__dict__ for i in pymedtermino.snomedct.SNOMEDCT[int(problem.concept_id)].parents]:
-            problems['concept_ids'][j['code']] = problem.id
+            data['concept_ids'][j['code']] = problem.id
         for j in [i.__dict__ for i in pymedtermino.snomedct.SNOMEDCT[int(problem.concept_id)].children]:
-            problems['concept_ids'][j['code']] = problem.id
+            data['concept_ids'][j['code']] = problem.id
     return HttpResponse(json.dumps(data), content_type="application/json")
 
 @login_required
