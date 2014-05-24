@@ -719,7 +719,7 @@ $(document).on('click', '.submit_data', function() {
     console.log('window '+window.current_problem);
     $('.problem_data').hide();
     var problem = window.current_problem;
-    $('#problem_'+problem).show();
+    $('#problem_data_'+problem).show();
     $(document).scrollTop( $('#problem_'+window.current_problem).offset().top );  
 });
 if (annyang) {
