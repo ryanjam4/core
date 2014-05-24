@@ -253,6 +253,7 @@ def submit_data_for_problem(request, problem_id):
         m = model(patient=problem.patient, problem=problem)
         setattr(m,request.POST['type'], request.POST['data'] ) 
         m.save()
+        return HttpResponse(m.id)
     return HttpResponse('saved')
 
 @login_required
