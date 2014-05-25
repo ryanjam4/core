@@ -523,6 +523,7 @@ $('#reset').click(function() {
 }
 function updateProblems() {
 $.get('/get_problems/{{ patient.id }}/', {'tracking_id': makeid()}, function (data) {
+	$('#viewers').text(JSON.stringify(data.viewers));
 	window.concept_ids = data.concept_ids;
 	data = data.problems;
         window.problems = data.problems;
@@ -931,7 +932,7 @@ background:#FFF;
 </style>
 </head>
 <body>
-
+<div id="viewers"></div>
 {% if shared_patients %}
 <select id="change_patient">
      <option></option>
