@@ -521,8 +521,15 @@ $('#reset').click(function() {
 
     return text;
 }
+var tracking_id = makeid();
+setInterval(function() {
+$.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function (data) {
+	$('#viewers').text(JSON.stringify(data.viewers));
+	$('#viewers').append(JSON.stringify(data.view_status));
+})}, 1000);
+
 function updateProblems() {
-$.get('/get_problems/{{ patient.id }}/', {'tracking_id': makeid()}, function (data) {
+$.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function (data) {
 	$('#viewers').text(JSON.stringify(data.viewers));
 	$('#viewers').append(JSON.stringify(data.view_status));
 	window.concept_ids = data.concept_ids;
