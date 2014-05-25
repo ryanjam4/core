@@ -175,7 +175,7 @@ def get_patient_data(request, patient_id):
     from datetime import datetime, timedelta
 
     time_threshold = datetime.now() - timedelta(seconds=5)
-    for viewer in Viewer.objects.filter(patient=patient, datetime__lt=time_threshold):
+    for viewer in Viewer.objects.filter(patient=patient, datetime__gte=time_threshold):
         viewers.append({'user_id': viewer.viewer.id})
     view_status = {}
     vs = ViewStatus.objects.filter(patient=patient)
