@@ -177,7 +177,7 @@ def get_patient_data(request, patient_id):
     view_status = {}
     vs = ViewStatus.objects.filter(patient=patient)
     if vs:
-        view_status = json.loads(vs.status)
+        view_status = json.loads(vs[0].status)
     data = {'problems': [], 'goals': [], 'notes': [], 'todos': [], 'concept_ids': {}, 'viewers': viewers, 'view_status': view_status}
     # At this point we know the user is allowed to view this patient. 
     # Now we have to detrimine what data can be provided to the requesting user
