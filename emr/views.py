@@ -154,6 +154,7 @@ def get_patient_data(request, patient_id):
         p, created = Viewer.objects.get_or_create(patient=patient, viewer=request.user, tracking_id=tracking_id)
         p.save()
     if 'new_status' in request.GET:
+        patient = User.objects.get(id=patient_id)
         p, created = ViewStatus.objects.get_or_create(patient=patient)
         p.status = request.GET['new_status']
         p.save()
