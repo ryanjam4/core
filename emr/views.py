@@ -172,7 +172,10 @@ def get_patient_data(request, patient_id):
     # and concept ids of the problems as well as the snomed parents and children of those problems mapped to a problem id
     # This way we can prevent duplicate problems from being added
     viewers = []
-    for viewer in Viewer.objects.filter(patient=patient):
+    from datetime import datetime, timedelta
+
+    time_threshold = datetime.now() - timedelta(seconds=5)
+    for viewer in Viewer.objects.filter(patient=patient, datetime__lt=time_threshold):
         viewers.append({'user_id': viewer.viewer.id})
     view_status = {}
     vs = ViewStatus.objects.filter(patient=patient)
