@@ -176,10 +176,12 @@ def get_patient_data(request, patient_id):
 
     time_threshold = datetime.now() - timedelta(seconds=5)
     viewers = list(set([viewer.viewer for viewer in Viewer.objects.filter(patient=patient, datetime__gte=time_threshold)]))
+    raw_viewers = []
     print 'viewers: '+str(viewers)
     for viewer in viewers:
         print 'viewer: '+str(viewer)
-        viewers.append({'user_id': viewer.id, 'full_name': viewer.get_full_name()})
+        raw_viewers.append({'user_id': viewer.id, 'full_name': viewer.get_full_name()})
+    viewers = raw_viewers
     view_status = {}
     vs = ViewStatus.objects.filter(patient=patient)
     if vs:
