@@ -528,7 +528,8 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
 	$('#viewers').text(JSON.stringify(data.viewers));
 	$('#viewers').append(JSON.stringify(data.view_status));
 	if (old_status != JSON.stringify(data.view_status)) {
-		status = eval(data.view_status)
+		status = data.view_status;
+		
 		$('#'+status.show[0]).show();
 		$(document).scrollTop( $('#'+status.scroll_to).offset().top );  
 		old_status = JSON.stringify(data.view_status);
