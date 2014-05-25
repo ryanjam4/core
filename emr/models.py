@@ -144,7 +144,7 @@ class Sharing(models.Model):
 class Viewer(models.Model):
     patient = models.ForeignKey(User, related_name='viewed_patient')
     viewer = models.ForeignKey(User, related_name='other_patient')
-    datetime = models.DateTimeField(auto_add=True)
+    datetime = models.DateTimeField(auto_now=True)
     tracking_id = models.CharField(max_length=20, blank=True) # for tracking open browser instances e.g. multiple tabs
     user_agent = models.CharField(max_length=200, blank=True) # user agent is type of browser/OS/version
     
