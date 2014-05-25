@@ -4,7 +4,7 @@ from django.db.models.loading import get_model
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.template import RequestContext
-from models import UserProfile, AccessLog, Problem, Goal, ToDo, Guideline, TextNote, PatientImage, Encounter, EncounterEvent, EventSummary, Sharing, View
+from models import UserProfile, AccessLog, Problem, Goal, ToDo, Guideline, TextNote, PatientImage, Encounter, EncounterEvent, EventSummary, Sharing, Viewer
 import traceback
 from django.contrib.auth.decorators import login_required
 import json
@@ -151,7 +151,7 @@ def get_patient_data(request, patient_id):
         tracking_id = request.GET['tracking_id']
         patient = User.objects.get(id=patient_id)
         
-        p, created = View.objects.get_or_create(patient=patient, viewer=request.user, tracking_id=tracking_id)
+        p, created = Viewer.objects.get_or_create(patient=patient, viewer=request.user, tracking_id=tracking_id)
         p.save()
     # Find out if user requesting the data is admin, physician, or patient
     role_of_user_requesting_the_data = UserProfile.objects.get(user=request.user).role
