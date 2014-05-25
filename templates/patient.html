@@ -856,7 +856,7 @@ if (annyang) {
         $(this).val('Hide problem');
         $(this).removeClass();
         $(this).addClass('hide_problem');
-        $.get('/get_problems/{{ patient.id }}/', {'new_status': '{"scroll_to": "problem_'+$(this).attr('problem')+'", show": ["'+$(this).attr('target')+'"]}'});
+        $.get('/get_problems/{{ patient.id }}/', {'new_status': '{"scroll_to": "problem_'+$(this).attr('problem')+'", "show": ["'+$(this).attr('target')+'"]}'});
         // THIS IS THE ENCOUNTER REFERENCE: 
         $.post('/save_encounter_event/', {'summary': 'Physician clicked on problem: "'+$('#problem_'+$(this).attr('problem')).text()+'"', 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
     });
