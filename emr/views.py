@@ -4,7 +4,7 @@ from django.db.models.loading import get_model
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.template import RequestContext
-from models import UserProfile, AccessLog, Problem, Goal, ToDo, Guideline, TextNote, PatientImage, Encounter, EncounterEvent, EventSummary, Sharing
+from models import UserProfile, AccessLog, Problem, Goal, ToDo, Guideline, TextNote, PatientImage, Encounter, EncounterEvent, EventSummary, Sharing, View
 import traceback
 from django.contrib.auth.decorators import login_required
 import json
@@ -146,6 +146,13 @@ def view_patient(request, user_id):
 
 @login_required
 def get_patient_data(request, patient_id):
+    # this tracking section lets us coordinate multiple people/browser windows/tabs accessing a patient page at the same time
+    if 'tracking_id' in request.GET:
+        tracking_id = request.GET['tracking_id']
+        patient = User.objects.get(id=patient_id)
+        
+        p, created = View.objects.get_or_create(patient=patient, viewer=request.user, tracking_id=tracking_id)
+        p.save()
     # Find out if user requesting the data is admin, physician, or patient
     role_of_user_requesting_the_data = UserProfile.objects.get(user=request.user).role
     # Get patient object from patient id
@@ -159,7 +166,10 @@ def get_patient_data(request, patient_id):
     # We provide the problems, goals, notes, todos
     # and concept ids of the problems as well as the snomed parents and children of those problems mapped to a problem id
     # This way we can prevent duplicate problems from being added
-    data = {'problems': [], 'goals': [], 'notes': [], 'todos': [], 'concept_ids': {}}
+    viewers = []
+    for viewer in Viewer.objects.filter(patient=patient):
+        viewers.append({'user_id': viewer.viewer.id})
+    data = {'problems': [], 'goals': [], 'notes': [], 'todos': [], 'concept_ids': {}, 'viewers': viewers}
     # At this point we know the user is allowed to view this patient. 
     # Now we have to detrimine what data can be provided to the requesting user
     # If the user requesting the patient data is the targeted patient or an admin or physician then we know it's OK to provide all the data
