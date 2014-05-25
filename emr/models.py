@@ -149,7 +149,7 @@ class Viewer(models.Model):
     user_agent = models.CharField(max_length=200, blank=True) # user agent is type of browser/OS/version
     
 class ViewStatus(models.Model):
-    patient = models.ForeignKey(User, related_name='viewed_patient')
+    patient = models.ForeignKey(User)
     status = models.TextField()
     
     
