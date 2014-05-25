@@ -511,8 +511,18 @@ $('#reset').click(function() {
         }
         $.post('/change_status/', {'target': target, 'id': $(this).attr('id'), 'value': $(this).is(':checked'), 'attr': $(this).attr('attr')});
     });
+    function makeid()
+{
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < 20; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
 function updateProblems() {
-$.get('/get_problems/{{ patient.id }}/', function (data) {
+$.get('/get_problems/{{ patient.id }}/', {'tracking_id': makeid()}, function (data) {
 	window.concept_ids = data.concept_ids;
 	data = data.problems;
         window.problems = data.problems;
