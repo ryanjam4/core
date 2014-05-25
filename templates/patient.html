@@ -522,10 +522,17 @@ $('#reset').click(function() {
     return text;
 }
 var tracking_id = makeid();
+var old_status = '';
 setInterval(function() {
 $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function (data) {
 	$('#viewers').text(JSON.stringify(data.viewers));
 	$('#viewers').append(JSON.stringify(data.view_status));
+	if (old_status != JSON.stringify(data.view_status)) {
+		status = eval(data.view_status)
+		$('#'+status.show[0]).show();
+		$(document).scrollTop( $('#'+status.scroll_to).offset().top );  
+		old_status = JSON.stringify(data.view_status);
+	}
 })}, 1000);
 
 function updateProblems() {
@@ -849,7 +856,7 @@ if (annyang) {
         $(this).val('Hide problem');
         $(this).removeClass();
         $(this).addClass('hide_problem');
-        $.get('/get_problems/{{ patient.id }}/', {'new_status': '{"show": ["'+$(this).attr('target')+'"]}'});
+        $.get('/get_problems/{{ patient.id }}/', {'new_status': '{"scroll_to": "'+problem_'+$(this).attr('problem')+'", show": ["'+$(this).attr('target')+'"]}'});
         // THIS IS THE ENCOUNTER REFERENCE: 
         $.post('/save_encounter_event/', {'summary': 'Physician clicked on problem: "'+$('#problem_'+$(this).attr('problem')).text()+'"', 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
     });
