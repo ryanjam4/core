@@ -4,7 +4,7 @@ from django.db.models.loading import get_model
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.template import RequestContext
-from models import UserProfile, AccessLog, Problem, Goal, ToDo, Guideline, TextNote, PatientImage, Encounter, EncounterEvent, EventSummary, Sharing, Viewer
+from models import UserProfile, AccessLog, Problem, Goal, ToDo, Guideline, TextNote, PatientImage, Encounter, EncounterEvent, EventSummary, Sharing, Viewer, ViewStatus
 import traceback
 from django.contrib.auth.decorators import login_required
 import json
@@ -153,6 +153,10 @@ def get_patient_data(request, patient_id):
         
         p, created = Viewer.objects.get_or_create(patient=patient, viewer=request.user, tracking_id=tracking_id)
         p.save()
+    if 'new_status' in request.GET:
+        p, created = ViewStatus.objects.get_or_create(patient=patient)
+        p.status = request.GET['new_status']
+        p.save()
     # Find out if user requesting the data is admin, physician, or patient
     role_of_user_requesting_the_data = UserProfile.objects.get(user=request.user).role
     # Get patient object from patient id
@@ -169,7 +173,11 @@ def get_patient_data(request, patient_id):
     viewers = []
     for viewer in Viewer.objects.filter(patient=patient):
         viewers.append({'user_id': viewer.viewer.id})
-    data = {'problems': [], 'goals': [], 'notes': [], 'todos': [], 'concept_ids': {}, 'viewers': viewers}
+    view_status = {}
+    vs = ViewStatus.objects.filter(patient=patient)
+    if vs:
+        view_status = json.loads(vs.status)
+    data = {'problems': [], 'goals': [], 'notes': [], 'todos': [], 'concept_ids': {}, 'viewers': viewers, 'view_status': view_status}
     # At this point we know the user is allowed to view this patient. 
     # Now we have to detrimine what data can be provided to the requesting user
     # If the user requesting the patient data is the targeted patient or an admin or physician then we know it's OK to provide all the data
