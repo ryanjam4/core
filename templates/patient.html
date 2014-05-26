@@ -600,7 +600,12 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
                 } else {
                     checked = '';
                 }
-                notes = '<ul id="goal_notes_'+data[i]['goals'][j]['id']+'" class="goal_notes"><li><strong>Start date:</strong> '+data[i]['goals'][j]['start_date']+'</li><li><input type="checkbox" attr="goal" id="'+data[i]['goals'][j]['id']+'" '+checked+'/> <strong>Is accomplished</strong></li><li><input type="checkbox" attr="goal_is_controlled" id="'+data[i]['goals'][j]['id']+'" '+checked+'/> <strong>Is controlled</strong></li><li><strong>Add:</strong> <textarea id="note_input_for_goal_'+data[i]['goals'][j]['id']+'" /><input type="button" value="Submit" parent="'+data[i]['goals'][j]['id']+'" target="note_input_for_goal_'+data[i]['goals'][j]['id']+'" object_type="note_for_goal" class="submit_data" /></li>';
+                if (data[i]['goals'][j]['is_controlled'] == true) {
+                    is_controlled_checked = ' checked ';
+                } else {
+                    is_controlled_checked = '';
+                }
+                notes = '<ul id="goal_notes_'+data[i]['goals'][j]['id']+'" class="goal_notes"><li><strong>Start date:</strong> '+data[i]['goals'][j]['start_date']+'</li><li><input type="checkbox" attr="goal" id="'+data[i]['goals'][j]['id']+'" '+checked+'/> <strong>Is accomplished</strong></li><li><input type="checkbox" attr="goal_is_controlled" id="'+data[i]['goals'][j]['id']+'" '+is_controlled_checked+'/> <strong>Is controlled</strong></li><li><strong>Add:</strong> <textarea id="note_input_for_goal_'+data[i]['goals'][j]['id']+'" /><input type="button" value="Submit" parent="'+data[i]['goals'][j]['id']+'" target="note_input_for_goal_'+data[i]['goals'][j]['id']+'" object_type="note_for_goal" class="submit_data" /></li>';
                 for (var k=0;k<data[i]['goals'][j]['notes'].length;k++) {
                     notes += '<li>(by '+data[i]['goals'][j]['notes'][k]['by']+') '+data[i]['goals'][j]['notes'][k]['note']+'</li>';
                 }
