@@ -620,12 +620,13 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
                 } else {
                     is_controlled_checked = '';
                 }
-                notes = '<ul id="goal_notes_'+problem['goals'][j]['id']+'" class="goal_notes"><li><strong>Start date:</strong> '+problem['goals'][j]['start_date']+'</li><li><input type="checkbox" attr="goal" id="'+problem['goals'][j]['id']+'" '+checked+'/> <strong>Is accomplished</strong></li><li><input type="checkbox" attr="goal_is_controlled" id="'+problem['goals'][j]['id']+'" '+is_controlled_checked+'/> <strong>Is controlled</strong></li><li><strong>Add:</strong> <textarea id="note_input_for_goal_'+problem['goals'][j]['id']+'" /><input type="button" value="Submit" parent="'+problem['goals'][j]['id']+'" target="note_input_for_goal_'+problem['goals'][j]['id']+'" object_type="note_for_goal" class="submit_data" /></li>';
-                for (var k=0;k<problem['goals'][j]['notes'].length;k++) {
-                    notes += '<li>(by '+problem['goals'][j]['notes'][k]['by']+') '+problem['goals'][j]['notes'][k]['note']+'</li>';
-                }
-                notes += '</ul>';
-                notes = '<div id="goal_notes_'+problem['goals'][j]['id']+'" class="goal_notes"><strong>Start date:</strong> '+problem['goals'][j]['start_date']+'<br/><input type="checkbox" attr="goal" id="'+problem['goals'][j]['id']+'" '+checked+'/> <strong>Is accomplished</strong><br/><input type="checkbox" attr="goal_is_controlled" id="'+problem['goals'][j]['id']+'" '+is_controlled_checked+'/> <strong>Is controlled</strong><br/><table id="note_'+problem['problem_id']+'">';
+                
+                notes = '<div id="goal_notes_'+problem['goals'][j]['id']+'" class="goal_notes">';
+                notes += '<strong>Start date:</strong> '+problem['goals'][j]['start_date'];
+                notes += '<br/><input type="checkbox" attr="goal" id="'+problem['goals'][j]['id']+'" '+checked+'/> ';
+                notes += '<strong>Is accomplished</strong><br/><input type="checkbox" attr="goal_is_controlled" ';
+                notes += 'id="'+problem['goals'][j]['id']+'" '+is_controlled_checked+'/> ';
+                notes += '<strong>Is controlled</strong><br/><table id="note_'+problem['problem_id']+'">';
                  var role = "{% if user_role == 'admin' %}physician{% else %}{{ user_role }}{% endif %}";
                  current_physician_note = '';
                  if (problem['goals'][j]['notes']['by_physician'].length > 0) {
