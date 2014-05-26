@@ -629,8 +629,8 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
                 notes += '<strong>Is controlled</strong><br/><table id="note_'+problem['problem_id']+'">';
                  var role = "{% if user_role == 'admin' %}physician{% else %}{{ user_role }}{% endif %}";
                  current_physician_note = '';
-                 if (problem['goals'][j]['notes']['by_physician'].length > 0) {
-                     current_physician_note = problem['goals'][j]['notes']['by_physician'][0]['note'];
+                 if (problem['goals'][j]['notes'].length > 0) {
+                     current_physician_note = problem['goals'][j]['notes'][0]['note'];
                      console.log(current_physician_note);
                      current_physician_note = '<textarea id="note_input_for_goal_'+problem['goals'][j]['id']+'" value="'+current_physician_note+'">'+current_physician_note+'</textarea><input type="button" value="Submit" parent="'+problem['goals'][j]['id']+'" target="note_input_for_goal_'+problem['goals'][j]['id']+'" object_type="note_for_goal" class="submit_data" />';
                           
