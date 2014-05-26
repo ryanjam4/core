@@ -632,38 +632,16 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
                  if (problem['goals'][j]['notes']['by_physician'].length > 0) {
                      current_physician_note = problem['goals'][j]['notes']['by_physician'][0]['note'];
                      console.log(current_physician_note);
-                     if (role == 'physician') {
-                         current_physician_note = '<textarea id="note_input_for_goal_'+problem['goals'][j]['id']+'" value="'+current_physician_note+'">'+current_physician_note+'</textarea><input type="button" value="Submit" parent="'+problem['goals'][j]['id']+'" target="note_input_for_goal_'+problem['goals'][j]['id']+'" object_type="note_for_goal" class="submit_data" />';
+                     current_physician_note = '<textarea id="note_input_for_goal_'+problem['goals'][j]['id']+'" value="'+current_physician_note+'">'+current_physician_note+'</textarea><input type="button" value="Submit" parent="'+problem['goals'][j]['id']+'" target="note_input_for_goal_'+problem['goals'][j]['id']+'" object_type="note_for_goal" class="submit_data" />';
                           
-                     }
+                     
                  } else {
-                     if (role == 'physician') {
-                         current_physician_note = '<textarea id="note_input_for_goal_'+problem['goals'][j]['id']+'" value="'+current_physician_note+'" /><input type="button" value="Submit" parent="'+problem['goals'][j]['id']+'" target="note_input_for_goal_'+problem['goals'][j]['id']+'" object_type="note_for_goal" class="submit_data" />';
+                     current_physician_note = '<textarea id="note_input_for_goal_'+problem['goals'][j]['id']+'" value="'+current_physician_note+'" /><input type="button" value="Submit" parent="'+problem['goals'][j]['id']+'" target="note_input_for_goal_'+problem['goals'][j]['id']+'" object_type="note_for_goal" class="submit_data" />';
                           
-                     }
+                     
                       
                  }
-                 current_patient_note = '';
-                 if (problem['goals'][j]['notes']['by_patient'].length > 0) {
-                     current_patient_note = problem['goals'][j]['notes']['by_patient'][0]['note'];
-                     if (role == 'patient') {
-                         current_patient_note = '<textarea id="note_input_'+problem['problem_id']+'" value="'+current_patient_note+'">'+current_patient_note+'</textarea><input type="button" value="Submit" parent="'+problem['problem_id']+'" target="note_input_'+problem['problem_id']+'" object_type="note" class="submit_data" />';
-                          
-                     }
-                 } else {
-                     if (role == 'patient') {
-                         current_patient_note = '<textarea id="note_input_'+problem['problem_id']+'" value="'+current_patient_note+'">'+current_patient_note+'</textarea><input type="button" value="Submit" parent="'+problem['problem_id']+'" target="note_input_'+problem['problem_id']+'" object_type="note" class="submit_data" />';
-                          
-                     } 
-                      
-                 }
-                 
-                 //notes += '<tr><td colspan="2"><strong>Add:</strong> <textarea id="note_input_'+problem['problem_id']+'" value="'+current_physician_note+'">'+current_physician_note+'</textarea><input type="button" value="Submit" parent="'+problem['problem_id']+'" target="note_input_'+problem['problem_id']+'" object_type="note" class="submit_data" /></td></tr>';
-                 //notes += '<tr><th>By physician</th><th>By patient</th></tr>';
                  notes += current_physician_note;
-                 //for (var j=0;j<problem['notes'].length;j++) {
-                 //    notes += '<tr><td colspan="5">(by '+problem['notes'][j]['by']+') '+problem['notes'][j]['note']+'</td></tr>';
-                 //}
                  notes += '</table></div>';
                  
                 goals += '<li id="goal_'+problem['goals'][j]['id']+'" class="'+problem['goals'][j]['is_controlled']+'">'+problem['goals'][j]['goal']+'<input type="button" class="show_goal" value="Show goal" target="goal_notes_'+problem['goals'][j]['id']+'" goal="'+problem['goals'][j]['id']+'" />'+notes+'</li>';
