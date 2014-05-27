@@ -557,7 +557,7 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
 	$('#viewers').text(JSON.stringify(data.viewers));
 	$('#viewers').append(JSON.stringify(data.view_status));
 	window.concept_ids = data.concept_ids;
-	data = data.problems;
+	data = data.problems['is_active'];
         window.problems = data.problems;
         $('#problems').html('');
         for (var i=0;i<data.length;i++) {
