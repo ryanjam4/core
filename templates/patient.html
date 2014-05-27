@@ -923,6 +923,7 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
          window.location = '/patient/'+$(this).val()+'/';
          
     });
+    $(document).on('click', '#toggle_inactive_problems', function() {$(this).toggle()})
 $(document).on('click', '.submit_data', function() {
     var parent_id = $(this).attr('parent');
 
@@ -1136,6 +1137,10 @@ background:red;
 padding:10px;
 display:none;
 background:#FFF;
+}
+#inactive_problems {
+	display:none;
+	
 }
 </style>
 </head>
