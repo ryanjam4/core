@@ -15,6 +15,7 @@ def instance_dict(instance, key_format=None):
         assert '%s' in key_format, 'key_format must contain a %s'
     key = lambda key: key_format and key_format % key or key
 
+    pk = instance._get_pk_val()
     d = {}
 
     for field in instance._meta.fields:
