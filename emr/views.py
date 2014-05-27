@@ -146,6 +146,31 @@ def view_patient(request, user_id):
 
 @login_required
 def get_patient_data(request, patient_id):
+    # We provide the problems, goals, notes, todos
+    # and concept ids of the problems as well as the snomed parents and children of those problems mapped to a problem id
+    # This way we can prevent duplicate problems from being added
+    viewers = []
+    from datetime import datetime, timedelta
+
+    time_threshold = datetime.now() - timedelta(seconds=5)
+    viewers = list(set([viewer.viewer for viewer in Viewer.objects.filter(patient=patient, datetime__gte=time_threshold)]))
+    raw_viewers = []
+    print 'viewers: '+str(viewers)
+    for viewer in viewers:
+        print 'viewer: '+str(viewer)
+        raw_viewers.append({'user_id': viewer.id, 'full_name': viewer.get_full_name()})
+    viewers = raw_viewers
+    view_status = {}
+    vs = ViewStatus.objects.filter(patient=patient)
+    if vs:
+        if not viewers:
+            vs[0].delete()
+        else:
+            try:
+                
+                view_status = json.loads(vs[0].status)
+            except:
+                pass
     # this tracking section lets us coordinate multiple people/browser windows/tabs accessing a patient page at the same time
     if 'tracking_id' in request.GET:
         tracking_id = request.GET['tracking_id']
@@ -168,27 +193,7 @@ def get_patient_data(request, patient_id):
     # Right now only users with role == patient have a patient page
     if (not is_patient(patient)):
         return HttpResponse("Error: this user isn't a patient")
-    # We provide the problems, goals, notes, todos
-    # and concept ids of the problems as well as the snomed parents and children of those problems mapped to a problem id
-    # This way we can prevent duplicate problems from being added
-    viewers = []
-    from datetime import datetime, timedelta
-
-    time_threshold = datetime.now() - timedelta(seconds=5)
-    viewers = list(set([viewer.viewer for viewer in Viewer.objects.filter(patient=patient, datetime__gte=time_threshold)]))
-    raw_viewers = []
-    print 'viewers: '+str(viewers)
-    for viewer in viewers:
-        print 'viewer: '+str(viewer)
-        raw_viewers.append({'user_id': viewer.id, 'full_name': viewer.get_full_name()})
-    viewers = raw_viewers
-    view_status = {}
-    vs = ViewStatus.objects.filter(patient=patient)
-    if vs:
-        try:
-            view_status = json.loads(vs[0].status)
-        except:
-            pass
+    
     data = {'problems': [], 'goals': [], 'notes': [], 'todos': [], 'concept_ids': {}, 'viewers': viewers, 'view_status': view_status}
     # At this point we know the user is allowed to view this patient. 
     # Now we have to detrimine what data can be provided to the requesting user
