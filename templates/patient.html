@@ -523,7 +523,7 @@ $('#reset').click(function() {
 }
 var tracking_id = makeid();
 var old_status = '';
-setInterval(function() {
+function getStatus() {
 $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function (data) {
 	$('#viewers').text(JSON.stringify(data.viewers));
 	$('#viewers').append(JSON.stringify(data.view_status));
@@ -535,8 +535,10 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
 		$(document).scrollTop( $('#'+status.scroll_to).offset().top );  
 		old_status = JSON.stringify(data.view_status);
 	}
-})}, 1000);
-
+	getStatus();
+});
+}
+getStatus();
 function updateProblems() {
 $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function (data) {
 	// this is debugging info for developing the syncing of patient pages on multiple devices among multiple users
