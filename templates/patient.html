@@ -931,7 +931,7 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
             html = '<div id="goal_'+goal['goal_id']+'" class="'+goal['is_controlled']+'">'+goal['goal'];
             html += ' <input type="button" value="Show goal" />';
             html += '</div>';
-            html += '<div id="goal_data_'+goal['goal_id']+'">'+status;
+            html += '<div class="goal_data" id="goal_data_'+goal['goal_id']+'">'+status;
             html += '</div>';
             $('#goals').append(html)
         }
@@ -1166,7 +1166,7 @@ background:green;
 .false {
 background:red;
 }
-.problem_data, .goal_notes {
+.problem_data, .goal_notes, .goal_data {
 padding:10px;
 display:none;
 background:#FFF;
