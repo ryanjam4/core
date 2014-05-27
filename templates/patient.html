@@ -1096,6 +1096,16 @@ if (annyang) {
         // THIS IS THE ENCOUNTER REFERENCE: 
         //$.post('/save_encounter_event/', {'summary': 'Physician clicked on problem: "'+$('#problem_'+$(this).attr('problem')).text()+'"', 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
     });
+    $('body').on('click', '.hide_nonproblem_goal', function () {
+        $('.goal_data').hide();
+        $(document).scrollTop( $('#goal_'+$(this).attr('goal')).offset().top );  
+        $(this).val('Show goal');
+        $(this).removeClass();
+        $(this).addClass('show_nonproblem_goal');
+        //$.get('/get_problems/{{ patient.id }}/', {'new_status': '{"scroll_to": "problem_'+$(this).attr('problem')+'", "action": "show", "show_what": ["'+$(this).attr('target')+'"]}'});
+        // THIS IS THE ENCOUNTER REFERENCE: 
+        //$.post('/save_encounter_event/', {'summary': 'Physician clicked on problem: "'+$('#problem_'+$(this).attr('problem')).text()+'"', 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
+    });
     $('body').on('click', '.show_goal', function () {
         //window.current_problem = $(this).attr('problem');
         $('.goal_notes').hide();
