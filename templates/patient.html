@@ -907,6 +907,7 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
         }
         html += '</div>';
         $('#problems').append(html);
+        $('#goals').html('');
         var goals = raw_data['goals']['not_accomplished'];
         for (var i=0;i<goals.length;i++) {
             var goal = goals[i];
