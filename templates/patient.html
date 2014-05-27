@@ -1074,45 +1074,11 @@ if (annyang) {
         }
     });
     $('#addGoal').click(function() {
-        if ($('#concept_id').val() == $('#concept_id').attr('default')) {
-            concept_id = '';
-        } else {
-            concept_id = $('#concept_id').val();
-        }
-        if (jQuery.inArray(concept_id, Object.keys(window.concept_ids)) != -1) {
-            var r = confirm("Go to existing problem");
-    		if (r == true) {
-    		    	window.current_problem = $(this).attr('problem');
-            $('.problem_data').hide();
-            var problem = window.concept_ids[concept_id];
-            $('#problem_'+problem).show();
-            $(document).scrollTop( $('#problem_'+problem).offset().top ); 
-    		} else {
-    		    $.post('/patient/{{ patient.id }}/add_problem/', {'problem_name': $('#problem_name').val(), 'concept_id': concept_id}, function (data) {
+        $.post('/patient/{{ patient.id }}/add_problem/', {'goal': $('#goal_description').val()}, function (data) {
 	            updateProblems();
-	            $('#problem_name').val($('#problem_name').attr('default'));
-	            $('#concept_id').val($('#concept_id').attr('default'));
-	            $('#results').html('');
+	            $('#goal_description').val($('goal_description').attr('default'));
 	        });
-	        $.post('/save_encounter_event/', {'summary': 'Physician added problem "'+$('#problem_name').val()+'"', 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
-
-    		}
-             
-            //$(this).val('Hide problem');
-            //$(this).removeClass();
-            //$(this).addClass('hide_problem');
-            
-            // THIS IS THE ENCOUNTER REFERENCE: 
-            //$.post('/save_encounter_event/', {'summary': 'Physician clicked on problem: "'+$('#problem_'+$(this).attr('problem')).text()+'"', 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
-
-        } else {
-	        $.post('/patient/{{ patient.id }}/add_problem/', {'problem_name': $('#problem_name').val(), 'concept_id': concept_id}, function (data) {
-	            updateProblems();
-	            $('#problem_name').val($('#problem_name').attr('default'));
-	            $('#concept_id').val($('#concept_id').attr('default'));
-	            $('#results').html('');
-	        });
-	        $.post('/save_encounter_event/', {'summary': 'Physician added problem "'+$('#problem_name').val()+'"', 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
+	        //$.post('/save_encounter_event/', {'summary': 'Physician added problem "'+$('#problem_name').val()+'"', 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
         }
     });
     $('body').on('click', '.show_problem', function () {
@@ -1285,7 +1251,7 @@ background:#FFF;
 <h3>Goals</h3>
 <div id="add_problem_div">
 <strong>Add Goal:</strong> 
-<input type="text" value="Goal name" default="Goal name" id="goal_name" />
+<input type="text" value="Goal name" default="Goal name" id="goal_description" />
 <input type="button" id="addGoal" value="Submit" />
 </div>
 
