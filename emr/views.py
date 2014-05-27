@@ -341,7 +341,7 @@ def add_problem(request, patient_id):
         problem = Problem(patient=User.objects.get(id=patient_id), problem_name=request.POST['problem_name'], concept_id=request.POST['concept_id'], authenticated=authenticated)
         problem.save()
     elif 'goal' in request.POST:
-        goal = Goal(patient=User.objects.get(id=patient_id), goal=goal)
+        goal = Goal(patient=User.objects.get(id=patient_id), goal=request.POST['goal'])
         goal.save()
     return HttpResponse('added')
 
