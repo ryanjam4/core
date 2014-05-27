@@ -534,10 +534,11 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
 		console.log('show: '+status['show']);
 		$('#'+status.show[0]).show();
 		console.log('#control_display_for_'+status.scroll_to);
+		
+		$(document).scrollTop( $('#'+status.scroll_to).offset().top );  
 		$('#control_display_for_'+status.scroll_to).val('Hide problem');
         	$('#control_display_for_'+status.scroll_to).removeClass();
         	$('#control_display_for_'+status.scroll_to).addClass('hide_problem');
-		$(document).scrollTop( $('#'+status.scroll_to).offset().top );  
 		old_status = JSON.stringify(data.view_status);
 	}
 	setTimeout(function() { getStatus(); },100);
