@@ -1073,6 +1073,48 @@ if (annyang) {
 	        $.post('/save_encounter_event/', {'summary': 'Physician added problem "'+$('#problem_name').val()+'"', 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
         }
     });
+    $('#addGoal').click(function() {
+        if ($('#concept_id').val() == $('#concept_id').attr('default')) {
+            concept_id = '';
+        } else {
+            concept_id = $('#concept_id').val();
+        }
+        if (jQuery.inArray(concept_id, Object.keys(window.concept_ids)) != -1) {
+            var r = confirm("Go to existing problem");
+    		if (r == true) {
+    		    	window.current_problem = $(this).attr('problem');
+            $('.problem_data').hide();
+            var problem = window.concept_ids[concept_id];
+            $('#problem_'+problem).show();
+            $(document).scrollTop( $('#problem_'+problem).offset().top ); 
+    		} else {
+    		    $.post('/patient/{{ patient.id }}/add_problem/', {'problem_name': $('#problem_name').val(), 'concept_id': concept_id}, function (data) {
+	            updateProblems();
+	            $('#problem_name').val($('#problem_name').attr('default'));
+	            $('#concept_id').val($('#concept_id').attr('default'));
+	            $('#results').html('');
+	        });
+	        $.post('/save_encounter_event/', {'summary': 'Physician added problem "'+$('#problem_name').val()+'"', 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
+
+    		}
+             
+            //$(this).val('Hide problem');
+            //$(this).removeClass();
+            //$(this).addClass('hide_problem');
+            
+            // THIS IS THE ENCOUNTER REFERENCE: 
+            //$.post('/save_encounter_event/', {'summary': 'Physician clicked on problem: "'+$('#problem_'+$(this).attr('problem')).text()+'"', 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
+
+        } else {
+	        $.post('/patient/{{ patient.id }}/add_problem/', {'problem_name': $('#problem_name').val(), 'concept_id': concept_id}, function (data) {
+	            updateProblems();
+	            $('#problem_name').val($('#problem_name').attr('default'));
+	            $('#concept_id').val($('#concept_id').attr('default'));
+	            $('#results').html('');
+	        });
+	        $.post('/save_encounter_event/', {'summary': 'Physician added problem "'+$('#problem_name').val()+'"', 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
+        }
+    });
     $('body').on('click', '.show_problem', function () {
         window.current_problem = $(this).attr('problem');
         $('.problem_data').hide();
