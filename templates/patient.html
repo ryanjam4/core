@@ -533,6 +533,9 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
 		console.log('status: '+status);
 		console.log('show: '+status['show']);
 		$('#'+status.show[0]).show();
+		$('#control_display_for_'+status.scroll_to).val('Hide problem');
+        	$('#control_display_for_'+status.scroll_to).removeClass();
+        	$('#control_display_for_'+status.scroll_to).addClass('hide_problem');
 		$(document).scrollTop( $('#'+status.scroll_to).offset().top );  
 		old_status = JSON.stringify(data.view_status);
 	}
@@ -570,7 +573,8 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
             for (var j=0; j<problem['affects'].length;j++) {
             	var a = problem['affects'][j];
                 affects += '<input type="button" value="'+a['problem_name']+'" ';
-                affects += 'class="show_problem" target="problem_data_'+a['problem_id']+'" ';
+                affects += 'class="show_problem" id="control_display_for_problem_'+a['problem_id']+'" ';
+                affects += 'target="problem_data_'+a['problem_id']+'" ';
                 affects += 'problem="'+a['problem_id']+'" />';
             }
             relationships += '<li><strong>Effected by:</strong> '+select+'</li>';
