@@ -201,7 +201,7 @@ def get_patient_data(request, patient_id):
     # If the user requesting the patient data is the targeted patient or an admin or physician then we know it's OK to provide all the data
     if ((request.user == patient) or (role_of_user_requesting_the_data in ['admin', 'physician'])):
         # Get all problems for the patient 
-        problems_query = Problem.objects.filter(patient=patient).order_by('problem_name').order_by('is_authenticated')
+        problems_query = Problem.objects.filter(patient=patient).order_by('problem_name').order_by('authenticated')
     # Otherwise the requesting user is only allowed to see some of the patient's info    
     else:
         # Get just the problems shared to the user
