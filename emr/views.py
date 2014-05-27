@@ -337,8 +337,12 @@ def submit_data_for_problem(request, problem_id):
 def add_problem(request, patient_id):
     role = UserProfile.objects.get(user=request.user).role
     authenticated = True if (role == 'physician' or role == 'admin') else False
-    problem = Problem(patient=User.objects.get(id=patient_id), problem_name=request.POST['problem_name'], concept_id=request.POST['concept_id'], authenticated=authenticated)
-    problem.save()
+    if 'problem_name' in request.POST:
+        problem = Problem(patient=User.objects.get(id=patient_id), problem_name=request.POST['problem_name'], concept_id=request.POST['concept_id'], authenticated=authenticated)
+        problem.save()
+    elif 'goal' in request.POST:
+        goal = Goal(patient=User.objects.get(id=patient_id), goal=goal)
+        goal.save()
     return HttpResponse('added')
 
 @login_required
