@@ -929,7 +929,7 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
             
             
             html = '<div id="goal_'+goal['goal_id']+'" class="'+goal['is_controlled']+'">'+goal['goal'];
-            html += ' <input type="button" value="Show goal" />';
+            html += ' <input type="button" target="goal_data_'+goal['goal_id']+'" goal="'+goal['goal_id']+'" class="show_nonproblem_goal" value="Show goal" />';
             html += '</div>';
             html += '<div class="goal_data" id="goal_data_'+goal['goal_id']+'">'+status;
             html += '</div>';
@@ -1084,6 +1084,17 @@ if (annyang) {
         $.get('/get_problems/{{ patient.id }}/', {'new_status': '{"scroll_to": "problem_'+$(this).attr('problem')+'", "action": "show", "show_what": ["'+$(this).attr('target')+'"]}'});
         // THIS IS THE ENCOUNTER REFERENCE: 
         $.post('/save_encounter_event/', {'summary': 'Physician clicked on problem: "'+$('#problem_'+$(this).attr('problem')).text()+'"', 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
+    });
+    $('body').on('click', '.show_nonproblem_goal', function () {
+        $('.goal_data').hide();
+        $('#'+$(this).attr('target')).show();
+        $(document).scrollTop( $('#goal_'+$(this).attr('goal')).offset().top );  
+        $(this).val('Hide goal');
+        $(this).removeClass();
+        $(this).addClass('hide_nonproblem_goal');
+        //$.get('/get_problems/{{ patient.id }}/', {'new_status': '{"scroll_to": "problem_'+$(this).attr('problem')+'", "action": "show", "show_what": ["'+$(this).attr('target')+'"]}'});
+        // THIS IS THE ENCOUNTER REFERENCE: 
+        //$.post('/save_encounter_event/', {'summary': 'Physician clicked on problem: "'+$('#problem_'+$(this).attr('problem')).text()+'"', 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
     });
     $('body').on('click', '.show_goal', function () {
         //window.current_problem = $(this).attr('problem');
