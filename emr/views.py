@@ -233,7 +233,7 @@ def get_patient_data(request, patient_id):
                 data['concept_ids'][j['code']] = problem.id
         except:
             pass
-    for problem in problems_query.filter(is_active=Flase):
+    for problem in problems_query.filter(is_active=False):
         # We store the data for this problem in a dictionary called "d"
         d = {}
         d['problem_id'] = problem.id
