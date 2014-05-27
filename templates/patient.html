@@ -533,6 +533,7 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
 		console.log('status: '+status);
 		console.log('show: '+status['show']);
 		$('#'+status.show[0]).show();
+		console.log('#control_display_for_'+status.scroll_to);
 		$('#control_display_for_'+status.scroll_to).val('Hide problem');
         	$('#control_display_for_'+status.scroll_to).removeClass();
         	$('#control_display_for_'+status.scroll_to).addClass('hide_problem');
