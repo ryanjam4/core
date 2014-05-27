@@ -530,16 +530,22 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
 	$('#viewers').append(JSON.stringify(data.view_status));
 	if (old_status != JSON.stringify(data.view_status)) {
 		var status = data.view_status;
-		console.log('status: '+status);
-		console.log('show: '+status['show']);
-		$('#'+status.show[0]).show();
-		console.log('#control_display_for_'+status.scroll_to);
-		
-		$(document).scrollTop( $('#'+status.scroll_to).offset().top );  
-		$('#control_display_for_'+status.scroll_to).attr('value', 'Hide problem');
-		$('#control_display_for_'+status.scroll_to).removeClass();
-		$('#control_display_for_'+status.scroll_to).addClass('hide_problem');
-		old_status = JSON.stringify(data.view_status);
+		if (status.action == 'show') {
+			console.log('status: '+status);
+			console.log('show: '+status['show_what']);
+			$('#'+status.show_what[0]).show();
+			console.log('#control_display_for_'+status.scroll_to);
+			
+			$(document).scrollTop( $('#'+status.scroll_to).offset().top );  
+			$('#control_display_for_'+status.scroll_to).attr('value', 'Hide problem');
+			$('#control_display_for_'+status.scroll_to).removeClass();
+			$('#control_display_for_'+status.scroll_to).addClass('hide_problem');
+			old_status = JSON.stringify(data.view_status);
+		} else if (status.action == 'hide') {
+			updateProblems();
+			setTimeout(function() {window.current_problem = null;
+        $('.problem_data').hide();}, 2000);
+		}
 	}
 	setTimeout(function() { getStatus(); },100);
 });
@@ -867,7 +873,7 @@ if (annyang) {
         $(this).val('Hide problem');
         $(this).removeClass();
         $(this).addClass('hide_problem');
-        $.get('/get_problems/{{ patient.id }}/', {'new_status': '{"scroll_to": "problem_'+$(this).attr('problem')+'", "show": ["'+$(this).attr('target')+'"]}'});
+        $.get('/get_problems/{{ patient.id }}/', {'new_status': '{"scroll_to": "problem_'+$(this).attr('problem')+'", "action": "show", "show_what": ["'+$(this).attr('target')+'"]}'});
         // THIS IS THE ENCOUNTER REFERENCE: 
         $.post('/save_encounter_event/', {'summary': 'Physician clicked on problem: "'+$('#problem_'+$(this).attr('problem')).text()+'"', 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
     });
@@ -889,6 +895,8 @@ if (annyang) {
         $(this).val('Show problem');
         $(this).removeClass();
         $(this).addClass('show_problem');
+        $.get('/get_problems/{{ patient.id }}/', {'new_status': '{"action": "hide"}'});
+
     });
     $('body').on('click', '.hide_goal', function () {
         //window.current_problem = null;
