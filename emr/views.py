@@ -212,6 +212,7 @@ def get_patient_data(request, patient_id):
         # We store the data for this problem in a dictionary called "d"
         d = {}
         d['problem_id'] = problem.id
+        d['start_date'] = problem.start_date.strftime('%m/%d/%y')
         d['effected_by'] = problem.parent.id if problem.parent else None
         d['affects'] = [{'problem_id': g.id, 'problem_name': g.problem_name} for g in problem.get_children()]
         d['problem_name'] = problem.problem_name
@@ -237,6 +238,7 @@ def get_patient_data(request, patient_id):
         # We store the data for this problem in a dictionary called "d"
         d = {}
         d['problem_id'] = problem.id
+        d['start_date'] = problem.start_date.strftime('%m/%d/%y')
         d['effected_by'] = problem.parent.id if problem.parent else None
         d['affects'] = [{'problem_id': g.id, 'problem_name': g.problem_name} for g in problem.get_children()]
         d['problem_name'] = problem.problem_name
