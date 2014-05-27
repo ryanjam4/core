@@ -536,15 +536,18 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
 		console.log('#control_display_for_'+status.scroll_to);
 		
 		$(document).scrollTop( $('#'+status.scroll_to).offset().top );  
-		$('#control_display_for_'+status.scroll_to).attr('value', 'Hide problem');
-        	$('#control_display_for_'+status.scroll_to).removeClass();
-        	$('#control_display_for_'+status.scroll_to).addClass('hide_problem');
+		setTimeout(function() {
+			$('#control_display_for_'+status.scroll_to).attr('value', 'Hide problem');
+        		$('#control_display_for_'+status.scroll_to).removeClass();
+        		$('#control_display_for_'+status.scroll_to).addClass('hide_problem');
+		},2000)
+		
 		old_status = JSON.stringify(data.view_status);
 	}
 	setTimeout(function() { getStatus(); },100);
 });
 }
-getStatus();
+
 function updateProblems() {
 $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function (data) {
 	// this is debugging info for developing the syncing of patient pages on multiple devices among multiple users
@@ -723,6 +726,7 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
             $('#problems').append('<div id="problem_'+problem['problem_id']+'" class="'+problem['is_controlled']+'">'+problem['problem_name']+' <input type="button" value="Show problem" class="show_problem" target="problem_data_'+problem['problem_id']+'" problem="'+problem['problem_id']+'" /></div><div class="problem_data" id="problem_data_'+problem['problem_id']+'"><h4>Relationships</h4>'+relationships+'<h4>Status</h4>'+status+'<h4>Guidelines</h4>'+guidelines+'<h4>Goals</h4>'+goals+'<h4>ToDo</h4>'+todos+'<h4>Notes</h4>'+notes+'<h4>Images</h4>'+image_form+images+'</div>');
         }
 });   
+    getStatus();
 }
     updateProblems();
     $(document).on('change', '.problem_parent', function() {
