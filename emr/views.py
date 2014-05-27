@@ -146,6 +146,10 @@ def view_patient(request, user_id):
 
 @login_required
 def get_patient_data(request, patient_id):
+    # Find out if user requesting the data is admin, physician, or patient
+    role_of_user_requesting_the_data = UserProfile.objects.get(user=request.user).role
+    # Get patient object from patient id
+    patient = User.objects.get(id=patient_id)
     # We provide the problems, goals, notes, todos
     # and concept ids of the problems as well as the snomed parents and children of those problems mapped to a problem id
     # This way we can prevent duplicate problems from being added
@@ -183,10 +187,7 @@ def get_patient_data(request, patient_id):
         p, created = ViewStatus.objects.get_or_create(patient=patient)
         p.status = request.GET['new_status']
         p.save()
-    # Find out if user requesting the data is admin, physician, or patient
-    role_of_user_requesting_the_data = UserProfile.objects.get(user=request.user).role
-    # Get patient object from patient id
-    patient = User.objects.get(id=patient_id)
+    
     # allowed viewers are the patient, admin/physician, and other patients the patient has shared to
     if (not ((request.user == patient) or (role_of_user_requesting_the_data in ['admin', 'physician']) or (Sharing.objects.filter(patient=patient, other_patient=request.user)))):
         return HttpResponse("Not allowed")
