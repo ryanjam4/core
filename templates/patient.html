@@ -910,7 +910,7 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
         var goals = raw_data['goals']['not_accomplished'];
         for (var i=0;i<goals.length;i++) {
             var goal = goals[i];
-            satus = '<ul>';
+            status = '<ul>';
             if (goal['is_controlled'] == true) {
                 checked = ' checked ';
             } else {
@@ -930,6 +930,8 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
             
             html = '<div id="goal_'+goal['goal_id']+'" class="'+goal['is_controlled']+'">'+goal['goal'];
             html += ' <input type="button" value="Show goal" />';
+            html += '</div>';
+            html += '<div id="goal_data_'+goal['goal_id']+'">'+status;
             html += '</div>';
             $('#goals').append(html)
         }
