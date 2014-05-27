@@ -195,7 +195,7 @@ def get_patient_data(request, patient_id):
     if (not is_patient(patient)):
         return HttpResponse("Error: this user isn't a patient")
     
-    data = {'problems': [], 'goals': [], 'notes': [], 'todos': [], 'concept_ids': {}, 'viewers': viewers, 'view_status': view_status}
+    data = {'problems': {'is_active': [], 'not_active': []}, 'goals': [], 'notes': [], 'todos': [], 'concept_ids': {}, 'viewers': viewers, 'view_status': view_status}
     # At this point we know the user is allowed to view this patient. 
     # Now we have to detrimine what data can be provided to the requesting user
     # If the user requesting the patient data is the targeted patient or an admin or physician then we know it's OK to provide all the data
@@ -208,7 +208,7 @@ def get_patient_data(request, patient_id):
         problems_query = [i.item for i in Sharing.objects.filter(content_type=ContentType.objects.get(app_label="emr", model="problem"), patient=patient, other_patient=request.user)]
 
     
-    for problem in problems_query:
+    for problem in problems_query.filter(is_active=True):
         # We store the data for this problem in a dictionary called "d"
         d = {}
         d['problem_id'] = problem.id
@@ -223,7 +223,32 @@ def get_patient_data(request, patient_id):
         d['goals'] = [{'id': g.id, 'start_date': g.start_date.strftime('%m/%d/%y'), 'goal': g.goal, 'is_controlled': g.is_controlled, 'accomplished': g.accomplished, 'notes': [{'note': n.note} for n in g.notes.all().order_by('-datetime')]} for g in Goal.objects.filter(problem=problem, accomplished=False)]
         d['todos'] = [{'todo': g.todo, 'id': g.id, 'accomplished': g.accomplished} for g in ToDo.objects.filter(problem=problem, accomplished=False)]
         d['notes'] = {'by_physician': [{'note': g.note} for g in TextNote.objects.filter(problem=problem, by__in=['physician', 'admin']).order_by('-datetime')], 'by_patient': [{'note': g.note} for g in TextNote.objects.filter(problem=problem, by='patient').order_by('-datetime')], 'all': [{'by': g.by, 'note': g.note} for g in TextNote.objects.filter(problem=problem)]}
-        data['problems'].append(d)
+        data['problems']['is_active'].append(d)
+        try:
+            data['concept_ids'][problem.concept_id] = problem.id
+            import pymedtermino.snomedct
+            for j in [i.__dict__ for i in pymedtermino.snomedct.SNOMEDCT[int(problem.concept_id)].parents]:
+                data['concept_ids'][j['code']] = problem.id
+            for j in [i.__dict__ for i in pymedtermino.snomedct.SNOMEDCT[int(problem.concept_id)].children]:
+                data['concept_ids'][j['code']] = problem.id
+        except:
+            pass
+    for problem in problems_query.filter(is_active=Flase):
+        # We store the data for this problem in a dictionary called "d"
+        d = {}
+        d['problem_id'] = problem.id
+        d['effected_by'] = problem.parent.id if problem.parent else None
+        d['affects'] = [{'problem_id': g.id, 'problem_name': g.problem_name} for g in problem.get_children()]
+        d['problem_name'] = problem.problem_name
+        d['images'] = [g.image.url for g in PatientImage.objects.filter(problem=problem)]
+        d['guidelines'] = [{'guideline': g.guideline, 'reference_url': g.reference_url} for g in Guideline.objects.filter(concept_id=problem.concept_id)]
+        d['is_controlled'] = problem.is_controlled
+        d['is_authenticated'] = problem.authenticated
+        d['is_active'] = problem.is_active
+        d['goals'] = [{'id': g.id, 'start_date': g.start_date.strftime('%m/%d/%y'), 'goal': g.goal, 'is_controlled': g.is_controlled, 'accomplished': g.accomplished, 'notes': [{'note': n.note} for n in g.notes.all().order_by('-datetime')]} for g in Goal.objects.filter(problem=problem, accomplished=False)]
+        d['todos'] = [{'todo': g.todo, 'id': g.id, 'accomplished': g.accomplished} for g in ToDo.objects.filter(problem=problem, accomplished=False)]
+        d['notes'] = {'by_physician': [{'note': g.note} for g in TextNote.objects.filter(problem=problem, by__in=['physician', 'admin']).order_by('-datetime')], 'by_patient': [{'note': g.note} for g in TextNote.objects.filter(problem=problem, by='patient').order_by('-datetime')], 'all': [{'by': g.by, 'note': g.note} for g in TextNote.objects.filter(problem=problem)]}
+        data['problems']['not_active'].append(d)
         try:
             data['concept_ids'][problem.concept_id] = problem.id
             import pymedtermino.snomedct
