@@ -83,7 +83,8 @@ class Problem(MPTTModel):
     is_active = models.BooleanField(default=True)
     authenticated = models.BooleanField(default=False)
     notes = models.ManyToManyField(TextNote, blank=True)
-
+    start_date = models.DateField(auto_now_add=True)
+    
     def __unicode__(self):
         return '%s %s' % (self.patient, self.problem_name)
 
