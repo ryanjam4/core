@@ -262,10 +262,14 @@ def get_patient_data(request, patient_id):
 
 @login_required
 def change_status(request):
+    role = UserProfile.objects.get(user=request.user).role
     print request.POST
     if request.POST['target'] == 'problem':
         problem = Problem.objects.get(id=request.POST['id'])
         value = True if request.POST['value'] == 'true' else False
+        if (request.POST['attr'] == 'authenticated' and role == 'patient'):
+            return HttpResponse("patients can't authenticate problems")
+
         setattr(problem,request.POST['attr'], value)
         problem.save()
     elif request.POST['target'] == 'goal':
