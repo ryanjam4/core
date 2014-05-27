@@ -4,6 +4,41 @@ from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from mptt.models import MPTTModel, TreeForeignKey
 
+def instance_dict(instance, key_format=None):
+    """
+    Returns a dictionary containing field names and values for the given
+    instance
+    """
+    from django.db.models.fields import DateField
+    from django.db.models.fields.related import ForeignKey
+    if key_format:
+        assert '%s' in key_format, 'key_format must contain a %s'
+    key = lambda key: key_format and key_format % key or key
+
+    d = {}
+
+    for field in instance._meta.fields:
+        attr = field.name
+        if hasattr(instance, attr):  # django filer broke without this check
+            value = getattr(instance, attr)
+            if value is not None:
+                if isinstance(field, ForeignKey):
+                    fkey_values = instance_dict(value)
+                    for k, v in fkey_values.items():
+                        d['%s.%s' % (key(attr), k)] = v
+                        continue
+                elif isinstance(field, DateField):
+                    value = value.strftime('%Y-%m-%d')
+        d[key(attr)] = value
+    for field in instance._meta.many_to_many:
+        if pk:
+            d[key(field.name)] = [
+            obj._get_pk_val()
+            for obj in getattr(instance, field.attname).all()]
+        else:
+            d[key(field.name)] = []
+    return d
+
 class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
     ROLE_CHOICES = (
@@ -18,6 +53,9 @@ class UserProfile(models.Model):
 
     def __unicode__(self):
         return '%s' % (self.user.get_full_name())
+        
+    def get_dict(self):
+        return instance_dict(self)
 
 class AccessLog(models.Model):
     user = models.ForeignKey(User)
@@ -27,11 +65,19 @@ class AccessLog(models.Model):
     def __unicode__(self):
         return '%s %s %s' % (self.user.username, self.datetime, self.summary)
 
+        
+    def get_dict(self):
+        return instance_dict(self)
+
 def get_path(instance, filename):
     try:
         return '%s/%s/%s' % (instance.patient.id, instance.problem.id, filename)
     except:
         return '%s/%s' % (instance.patient.id, filename)
+
+        
+    def get_dict(self):
+        return instance_dict(self)
  
 class Encounter(models.Model):
     physician = models.ForeignKey(User, related_name="physician")
@@ -48,6 +94,10 @@ class Encounter(models.Model):
     def __unicode__(self):
         return 'Patient: %s Time: %s' % (self.patient.get_full_name(), self.physician.get_full_name())
 
+        
+    def get_dict(self):
+        return instance_dict(self)
+
 class EncounterEvent(models.Model):
     datetime = models.DateTimeField(auto_now_add=True)
     content_type = models.ForeignKey(ContentType)
@@ -57,6 +107,10 @@ class EncounterEvent(models.Model):
     def __unicode__(self):
         return unicode(self.event)
         
+        
+    def get_dict(self):
+        return instance_dict(self)
+        
 class EventSummary(models.Model):
     patient = models.ForeignKey(User)
     datetime = models.DateTimeField(auto_now_add=True)
@@ -64,6 +118,10 @@ class EventSummary(models.Model):
 
     def __unicode__(self):
         return '%s %s' % (unicode(self.patient), self.summary)
+
+        
+    def get_dict(self):
+        return instance_dict(self)
 
 class TextNote(models.Model):
     BY_CHOICES = (
@@ -73,6 +131,10 @@ class TextNote(models.Model):
     by = models.CharField(max_length=20, choices=BY_CHOICES)
     note = models.TextField()
     datetime = models.DateTimeField(auto_now_add=True)
+
+        
+    def get_dict(self):
+        return instance_dict(self)
 
 class Problem(MPTTModel):
     patient = models.ForeignKey(User)
@@ -88,6 +150,10 @@ class Problem(MPTTModel):
     def __unicode__(self):
         return '%s %s' % (self.patient, self.problem_name)
 
+        
+    def get_dict(self):
+        return instance_dict(self)
+
 class Goal(models.Model):
     patient = models.ForeignKey(User)
     problem = models.ForeignKey(Problem, null=True, blank=True)
@@ -100,6 +166,10 @@ class Goal(models.Model):
     def __unicode__(self):
         return '%s %s' % (unicode(self.patient), unicode(self.problem))
 
+        
+    def get_dict(self):
+        return instance_dict(self)
+
 class ToDo(models.Model):
     patient = models.ForeignKey(User)
     problem = models.ForeignKey(Problem, null=True, blank=True)
@@ -111,6 +181,10 @@ class ToDo(models.Model):
     def __unicode__(self):
         return '%s' % (unicode(self.patient))
 
+        
+    def get_dict(self):
+        return instance_dict(self)
+
 class Guideline(models.Model):
     concept_id = models.CharField(max_length=20, blank=True)
     guideline = models.TextField()
@@ -118,6 +192,10 @@ class Guideline(models.Model):
 
     def __unicode__(self):
         return '%s %s' % (self.concept_id, self.guideline)
+
+        
+    def get_dict(self):
+        return instance_dict(self)
 
 class PatientImage(models.Model):
     patient = models.ForeignKey(User)
@@ -127,6 +205,10 @@ class PatientImage(models.Model):
 
     def __unicode__(self):
         return '%s' % (unicode(self.patient))
+        
+        
+    def get_dict(self):
+        return instance_dict(self)
         
 class Sharing(models.Model):
     patient = models.ForeignKey(User, related_name='target_patient')
@@ -141,6 +223,10 @@ class Sharing(models.Model):
     
     def __unicode__(self):
         return '%s %s' % (unicode(self.patient), unicode(self.other_patient))
+
+        
+    def get_dict(self):
+        return instance_dict(self)
         
 class Viewer(models.Model):
     patient = models.ForeignKey(User, related_name='viewed_patient')
@@ -148,9 +234,15 @@ class Viewer(models.Model):
     datetime = models.DateTimeField(auto_now=True)
     tracking_id = models.CharField(max_length=20, blank=True) # for tracking open browser instances e.g. multiple tabs
     user_agent = models.CharField(max_length=200, blank=True) # user agent is type of browser/OS/version
+
+        
+    def get_dict(self):
+        return instance_dict(self)
     
 class ViewStatus(models.Model):
     patient = models.ForeignKey(User)
     status = models.TextField()
     
-    
+        
+    def get_dict(self):
+        return instance_dict(self)    
