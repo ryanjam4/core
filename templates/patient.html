@@ -522,7 +522,7 @@ $('#reset').click(function() {
     return text;
 }
 var tracking_id = makeid();
-var old_status = '';
+var old_status = '{}';
 function getStatus() {
 	console.log('get stauts')
 $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function (data) {
