@@ -195,7 +195,7 @@ def get_patient_data(request, patient_id):
     if (not is_patient(patient)):
         return HttpResponse("Error: this user isn't a patient")
     
-    data = {'problems': {'is_active': [], 'not_active': []}, 'goals': [{'not_accomplished': [], 'accomplished': []}], 'notes': [], 'todos': [], 'concept_ids': {}, 'viewers': viewers, 'view_status': view_status}
+    data = {'problems': {'is_active': [], 'not_active': []}, 'goals': {'not_accomplished': [], 'accomplished': []}, 'notes': [], 'todos': [], 'concept_ids': {}, 'viewers': viewers, 'view_status': view_status}
     # At this point we know the user is allowed to view this patient. 
     # Now we have to detrimine what data can be provided to the requesting user
     # If the user requesting the patient data is the targeted patient or an admin or physician then we know it's OK to provide all the data
