@@ -195,7 +195,7 @@ def get_patient_data(request, patient_id):
     if (not is_patient(patient)):
         return HttpResponse("Error: this user isn't a patient")
     
-    data = {'problems': {'is_active': [], 'not_active': []}, 'goals': [], 'notes': [], 'todos': [], 'concept_ids': {}, 'viewers': viewers, 'view_status': view_status}
+    data = {'problems': {'is_active': [], 'not_active': []}, 'goals': [{'not_accomplished': [], 'accomplished': []}], 'notes': [], 'todos': [], 'concept_ids': {}, 'viewers': viewers, 'view_status': view_status}
     # At this point we know the user is allowed to view this patient. 
     # Now we have to detrimine what data can be provided to the requesting user
     # If the user requesting the patient data is the targeted patient or an admin or physician then we know it's OK to provide all the data
@@ -258,6 +258,15 @@ def get_patient_data(request, patient_id):
                 data['concept_ids'][j['code']] = problem.id
         except:
             pass
+    for goal in Goal.objects.filter(patient=patient, accomplished=False, problem=None).order_by('goal'):
+        d = {}
+        d['goal_id'] = goal.id
+        d['goal'] = goal.goal
+        d['start_date'] = goal.start_date.strftime('%m/%d/%y')
+        d['is_controlled'] = goal.is_controlled
+        d['accomplished'] = goal.accomplished
+        data['goals']['not_accomplished'].append(d)
+        
     return HttpResponse(json.dumps(data), content_type="application/json")
 
 @login_required
