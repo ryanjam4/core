@@ -907,6 +907,32 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
         }
         html += '</div>';
         $('#problems').append(html);
+        var goals = raw_data['goals']['not_accomplished'];
+        for (var i=0;i<goals.length;i++) {
+            var goal = goals[i];
+            satus = '<ul>';
+            if (goal['is_controlled'] == true) {
+                checked = ' checked ';
+            } else {
+                checked = '';
+            }
+            status += '<li><input type="checkbox" attr="is_controlled" id="'+goal['goal_id']+'" '+checked+'/> ';
+            status += 'Is controlled</li>';
+            if (problem['accomplished'] == true) {
+                checked = ' checked ';
+            } else {
+                checked = '';
+            }
+            status += '<li><input type="checkbox" attr="accomplished" id="'+goal['goal_id']+'" '+checked+'/> ';
+            status += 'Is accomplished</li>';
+            status += '</ul>';
+            
+            
+            html = '<div id="goal_'+goal['goal_id']+'" class="'+goal['is_controlled']+'">'+goal['goal'];
+            html += ' <input type="button" value="Show goal" class="show_problem" id="control_display_for_problem_'+problem['problem_id']';'
+            html += '" target="problem_data_'+problem['problem_id']+'" problem="'+problem['problem_id']+'" /></div>';
+            $('#goals').append(html)
+        }
 });   
     getStatus();
 }
