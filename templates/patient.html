@@ -1166,6 +1166,14 @@ if (annyang) {
 	        //$.post('/save_encounter_event/', {'summary': 'Physician added problem "'+$('#problem_name').val()+'"', 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
         
     });
+    $('#addTodo').click(function() {
+        $.post('/patient/{{ patient.id }}/add_problem/', {'todo': $('#todo_description').val()}, function (data) {
+	            updateProblems();
+	            $('#todo_description').val($('todo_description').attr('default'));
+	        });
+	        //$.post('/save_encounter_event/', {'summary': 'Physician added problem "'+$('#problem_name').val()+'"', 'encounter_id': window.encounter_id, 'patient_id': {{ patient.id }}});
+        
+    });
     $('body').on('click', '.show_problem', function () {
         window.current_problem = $(this).attr('problem');
         $('.problem_data').hide();
@@ -1329,7 +1337,7 @@ background:#FFF;
 <h3>To-dos</h3>
 <div id="add_problem_div">
 <strong>Add Todo:</strong> 
-<input type="text" value="Todo name" default="Todo name" id="todo_name" />
+<input type="text" value="Todo name" default="Todo name" id="todo_description" />
 <input type="button" id="addTodo" value="Submit" />
 </div>
 
