@@ -506,6 +506,9 @@ $('#reset').click(function() {
             var target = $(this).attr('attr');
             $("#goal_"+$(this).attr('id')).removeClass();
             $("#goal_"+$(this).attr('id')).addClass($(this).is(':checked').toString());
+        } else if $(this).attr('attr') != 'problem' {
+            $.post('/change_status/', {'target': $(this).attr('target'), 'id': $(this).attr('id'), 'value': $(this).is(':checked'), 'attr': $(this).attr('attr')});
+ 	
         } else {
             var target = 'problem';
         }
