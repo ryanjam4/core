@@ -579,7 +579,24 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
                 }
             }
             select += '</select>';
-            select = "<ul style='yellow'>";
+            select = "<ul style='background:yellow'>";
+            for (var j=0; j<data.length;j++) {
+            	
+                if (data[j]['problem_name'] != problem['problem_name']) {
+                    console.log(problem['effected_by'][data[j]['problem_id'].toString()]);
+                    //console.log("problem['effected_by']['"+data[j]['problem_id'].toString()+"'])";
+                    if (problem['effected_by'][data[j]['problem_id'].toString()] == true) {
+	                var checked = ' checked ';
+	            } else {
+	                var checked = '';
+	            }
+                    select += '<li>';
+            	    select += data[j]['problem_name'] + '<input type="checkbox" '+checked+' />';
+            	    select += '</li>';
+                }
+            }
+            select += "</ul>";
+            select += problem['problem_name']+"<br/><ul style='background:yellow'>";
             for (var j=0; j<data.length;j++) {
             	
                 if (data[j]['problem_name'] != problem['problem_name']) {
