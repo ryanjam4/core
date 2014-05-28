@@ -591,7 +591,9 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
 	                var checked = '';
 	            }
                     select += '<li>';
-            	    select += data[j]['problem_name'] + '<input type="checkbox" '+checked+' />';
+                    // 'target': target, 'id': $(this).attr('id'), 'value': $(this).is(':checked'), 'attr': $(this).attr('attr')
+            	    select += data[j]['problem_name'] + '<input type="checkbox" '+checked+' target="'+data[j]['problem_id']'" ';
+            	    select += 'id="'+problem['problem_id']+'" attr="effected_by" />';
             	    select += '</li>';
                 }
             }
