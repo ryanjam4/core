@@ -222,7 +222,15 @@ def get_patient_data(request, patient_id):
             else:
                 effected_by[int(i.id)] = False
         d['effected_by'] = effected_by
-        d['affects'] = [{'problem_id': g.id, 'problem_name': g.problem_name} for g in problem.get_children()]
+        affects = {}
+        for i in problems_query.filter(is_active=True):
+            if i == problem:
+                continue
+            elif ProblemRelationship.objects.filter(source=problem, target=i):
+                affects[int(i.id)] = True
+            else:
+                affects[int(i.id)] = False
+        d['affects'] = affects
         d['problem_name'] = problem.problem_name
         d['images'] = [g.image.url for g in PatientImage.objects.filter(problem=problem)]
         d['guidelines'] = [{'guideline': g.guideline, 'reference_url': g.reference_url} for g in Guideline.objects.filter(concept_id=problem.concept_id)]
