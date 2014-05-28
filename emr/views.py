@@ -317,8 +317,9 @@ def submit_data_for_problem(request, problem_id):
         problem = Problem.objects.get(id=problem_id)
         from datetime import datetime
         if not request.POST['data'].index('/') == 2:
-            request.POST['data'] = '0' + request.POST['data']
-        problem.start_date = datetime.strptime(request.POST['data'], "%m/%d/%Y")
+            problem.start_date = datetime.strptime('0' + request.POST['data'], "%m/%d/%Y")
+        else:
+            problem.start_date = datetime.strptime(request.POST['data'], "%m/%d/%Y")
         problem.save()
     elif request.POST['type'] == 'note_for_goal':
         goal = Goal.objects.get(id=problem_id)
