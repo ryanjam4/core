@@ -564,7 +564,8 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
         for (var i=0;i<data.length;i++) {
             var problem = data[i];
             relationships = '<ul>';
-            var select = '<select class="problem_parent" parent="'+problem['problem_id']+'">';
+            var select = '<select class="problem_parent submit_data" id="change_problem_parent_'+problem['problem_id']+'" ';
+            select += 'target="change_problem_parent_'+problem['problem_id']+'" object_type="problem_parent" parent="'+problem['problem_id']+'">';
             select += '<option value="none">none</option>';
             for (var j=0; j<data.length;j++) {
             	
@@ -573,8 +574,8 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
                     if (data[j]['problem_id'] == problem['effected_by']) {
                         selected = ' selected';
                     }
-                    select += '<option value="'+problem['problem_id']+'"'+selected+'>';
-                    select += problem['problem_name']+'</option>';
+                    select += '<option value="'+data[j]['problem_id']+'"'+selected+'>';
+                    select += data[j]['problem_name']+'</option>';
                 }
             }
             select += '</select>';
