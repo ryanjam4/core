@@ -512,6 +512,7 @@ $('#reset').click(function() {
         } else {
             var target = 'problem';
         }
+        console.log('target: '+target);
         $.post('/change_status/', {'target': target, 'id': $(this).attr('id'), 'value': $(this).is(':checked'), 'attr': $(this).attr('attr')});
     });
     function makeid()
