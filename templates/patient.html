@@ -1300,20 +1300,6 @@ background:#FFF;
 </div>
 
 <div id="problems"></div>
-<div id="problems_tree">
-<ul class="root">
-    {% recursetree problems %}
-        <li>
-            {{ node.problem_name }}
-            {% if not node.is_leaf_node %}
-                <ul class="children">
-                    {{ children }}
-                </ul>
-            {% endif %}
-        </li>
-    {% endrecursetree %}
-</ul>
-</div>
 <h3>Goals</h3>
 <div id="add_problem_div">
 <strong>Add Goal:</strong> 
