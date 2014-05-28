@@ -260,7 +260,7 @@ def get_patient_data(request, patient_id):
                 data['concept_ids'][j['code']] = problem.id
         except:
             pass
-    for goal in Goal.objects.filter(patient=patient, accomplished=False, problem=None).order_by('goal'):
+    for goal in Goal.objects.filter(patient=patient, accomplished=False).order_by('goal'):
         d = {}
         d['for_problem'] = goal.problem.problem_name if goal.problem else ''
         d['goal_id'] = goal.id
