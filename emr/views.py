@@ -4,7 +4,7 @@ from django.db.models.loading import get_model
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.template import RequestContext
-from models import UserProfile, AccessLog, Problem, Goal, ToDo, Guideline, TextNote, PatientImage, Encounter, EncounterEvent, EventSummary, Sharing, Viewer, ViewStatus
+from models import UserProfile, AccessLog, Problem, Goal, ToDo, Guideline, TextNote, PatientImage, Encounter, EncounterEvent, EventSummary, Sharing, Viewer, ViewStatus, ProblemRelationship
 import traceback
 from django.contrib.auth.decorators import login_required
 import json
@@ -77,7 +77,7 @@ def home(request):
         traceback.print_exc()
         if request.user.is_superuser:
             context = {}
-            context['role'] = 'admin'
+            context['role'] = 'admin'
             context = RequestContext(request, context)
             return render_to_response("home.html", context)
 
@@ -213,7 +213,15 @@ def get_patient_data(request, patient_id):
         d = {}
         d['problem_id'] = problem.id
         d['start_date'] = problem.start_date.strftime('%m/%d/%Y')
-        d['effected_by'] = problem.parent.id if problem.parent else None
+        effected_by = {}
+        for i in problems_query.filter(is_active=True):
+            if i == problem:
+                continue
+            elif ProblemRelationship.objects.filter(source=i, target=problem):
+                effected_by[i.id] = True
+            else:
+                effected_by[i.id] = False
+        d['effected_by'] = effected_by
         d['affects'] = [{'problem_id': g.id, 'problem_name': g.problem_name} for g in problem.get_children()]
         d['problem_name'] = problem.problem_name
         d['images'] = [g.image.url for g in PatientImage.objects.filter(problem=problem)]
