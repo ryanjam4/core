@@ -586,6 +586,8 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
                 affects += 'target="problem_data_'+a['problem_id']+'" ';
                 affects += 'problem="'+a['problem_id']+'" />';
             }
+            relationships += '<li><strong>Start date:</strong> <input type="text" value="'+problem['start_date']+'" />';
+            relationships += '<input type="button" value="submit" /></li>';
             relationships += '<li><strong>Effected by:</strong> '+select+'</li>';
             relationships += '<li><strong>Affects:</strong> '+affects+'</li></ul>';
             if (problem['is_authenticated'] == true) {
