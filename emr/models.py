@@ -247,3 +247,10 @@ class ViewStatus(models.Model):
         
     def get_dict(self):
         return instance_dict(self)    
+
+class ProblemRelationship(models.Model):
+    source = models.ForeignKey(Problem, related_name="source")
+    target = models.ForeignKey(Problem, related_name="target")
+    
+    def __unicode__(self):
+        return "%s %s" % (unicode(self.source), unicode(self.target))
