@@ -633,8 +633,8 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
             relationships += 'value="'+problem['start_date']+'" />';
             relationships += '<input type="button" value="Submit new date" parent="'+problem['problem_id']+'" ';
             relationships += 'target="problem_start_date_'+problem['problem_id']+'" object_type="problem_start_date" class="submit_data"/></li>';
-            relationships += '<li><strong>Effected by:</strong> '+select+'</li>';
-            relationships += '<li><strong>Affects:</strong> '+affects+'</li></ul>';
+            relationships += '<li>'+select+'</li>';
+            //relationships += '<li><strong>Affects:</strong> '+affects+'</li></ul>';
             if (problem['is_authenticated'] == true) {
                 checked = ' checked ';
             } else {
