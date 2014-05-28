@@ -77,7 +77,7 @@ def home(request):
         traceback.print_exc()
         if request.user.is_superuser:
             context = {}
-            context['role'] = 'admin'
+            context['role'] = 'admin'
             context = RequestContext(request, context)
             return render_to_response("home.html", context)
 
