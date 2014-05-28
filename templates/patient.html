@@ -586,12 +586,12 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
                     console.log(problem['effected_by'][data[j]['problem_id'].toString()]);
                     //console.log("problem['effected_by']['"+data[j]['problem_id'].toString()+"'])";
                     if (problem['effected_by'][data[j]['problem_id'].toString()] == true) {
-	                checked = ' checked ';
+	                var checked = ' checked ';
 	            } else {
-	                checked = '';
+	                var checked = '';
 	            }
                     select += '<li>';
-            	    select += data[j]['problem_name'] + '<input type="checkbox" checked />';
+            	    select += data[j]['problem_name'] + '<input type="checkbox" '+checked+' />';
             	    select += '</li>';
                 }
             }
