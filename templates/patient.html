@@ -579,6 +579,21 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
                 }
             }
             select += '</select>';
+            select = "<ul style='yellow'>";
+            for (var j=0; j<data.length;j++) {
+            	select += '<li>';
+            	select += data[j]['problem_name'] + '<input type="checkbox" />';
+            	select += '</li>';
+                if (data[j]['problem_name'] != problem['problem_name']) {
+                    selected = '';
+                    if (data[j]['problem_id'] == problem['effected_by']) {
+                        selected = ' selected';
+                    }
+                    select += '<option value="'+data[j]['problem_id']+'"'+selected+'>';
+                    select += data[j]['problem_name']+'</option>';
+                }
+            }
+            select += "</ul>";
             affects = '';
             for (var j=0; j<problem['affects'].length;j++) {
             	var a = problem['affects'][j];
