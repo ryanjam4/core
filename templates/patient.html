@@ -1003,6 +1003,22 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
             html += '</div>';
             $('#goals').append(html)
         }
+        $('#todos').html('');
+        var todos = raw_data['todos']['not_accomplished'];
+        for (var i=0;i<todos.length;i++) {
+            var todo = todos[i];
+            status = '<ul>';
+            status += '<li><input type="checkbox" attr="goal" id="'+todo['todo_id']+'" '+checked+'/> ';
+            status += 'Is accomplished</li>';
+            status += '</ul>';
+            
+            html = '<div id="goal_'+goal['goal_id']+'" class="'+todo['todo_id']+'">'+todo['todo']+for_problem;
+            html += ' <input type="button" target="goal_data_'+todo['todo_id']+'" goal="'+todo['todo_id']+'" class="show_nonproblem_todo" value="Show todo" />';
+            html += '</div>';
+            html += '<div class="goal_data" id="goal_data_'+todo['todo_id']+'">'+status;
+            html += '</div>';
+            $('#todos').append(html)
+        }
 });   
     getStatus();
 }
@@ -1022,7 +1038,7 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
     });
     $(document).on('change', '#change_patient', function() {
          window.location = '/patient/'+$(this).val()+'/';
-         
+         id']+'" goal="'+goal[
     });
     $(document).on('click', '#toggle_inactive_problems', function() {$('#inactive_problems').toggle()})
 $(document).on('click', '.submit_data', function() {
