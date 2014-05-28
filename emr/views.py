@@ -316,6 +316,18 @@ def change_status(request):
         value = True if request.POST['value'] == 'true' else False
         setattr(todo,'accomplished', value)
         todo.save()
+    elif request.POST['target'] == 'todo':
+        todo = ToDo.objects.get(id=request.POST['id'])
+        value = True if request.POST['value'] == 'true' else False
+        setattr(todo,'accomplished', value)
+        todo.save()
+    elif request.POST['attr'] == 'effected_by':
+        if request.POST['value'] == 'true':
+            pr = ProblemRelationship(source=Problem.objects.get(id=request.POST['target']), target=Problem.objects.get(id=request.POST['id']))
+            pr.save()
+        else:
+            pr = ProblemRelationship.objects.get(source=Problem.objects.get(id=request.POST['target']), target=Problem.objects.get(id=request.POST['id']))
+            pr.delete()
     return HttpResponse('saved')
 
 @login_required
