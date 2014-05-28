@@ -600,9 +600,9 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
             for (var j=0; j<data.length;j++) {
             	
                 if (data[j]['problem_name'] != problem['problem_name']) {
-                    console.log(problem['effected_by'][data[j]['problem_id'].toString()]);
+                    console.log(problem['affects'][data[j]['problem_id'].toString()]);
                     //console.log("problem['effected_by']['"+data[j]['problem_id'].toString()+"'])";
-                    if (problem['effected_by'][data[j]['problem_id'].toString()] == true) {
+                    if (problem['affects'][data[j]['problem_id'].toString()] == true) {
 	                var checked = ' checked ';
 	            } else {
 	                var checked = '';
