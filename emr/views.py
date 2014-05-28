@@ -328,6 +328,13 @@ def change_status(request):
         else:
             pr = ProblemRelationship.objects.get(source=Problem.objects.get(id=request.POST['target']), target=Problem.objects.get(id=request.POST['id']))
             pr.delete()
+    elif request.POST['attr'] == 'affects':
+        if request.POST['value'] == 'true':
+            pr = ProblemRelationship(source=Problem.objects.get(id=request.POST['id']), target=Problem.objects.get(id=request.POST['target']))
+            pr.save()
+        else:
+            pr = ProblemRelationship.objects.get(source=Problem.objects.get(id=request.POST['id']), target=Problem.objects.get(id=request.POST['target']))
+            pr.delete()
     return HttpResponse('saved')
 
 @login_required
