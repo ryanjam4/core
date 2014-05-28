@@ -317,7 +317,7 @@ def submit_data_for_problem(request, problem_id):
     elif request.POST['type'] == 'problem_parent':
         
         problem = Problem.objects.get(id=problem_id)
-        if (request.POST['data'] == none):
+        if (request.POST['data'] == 'none'):
             problem.parent = None
         else:
             problem.parent = Problem.objects.get(id=request.POST['data'])
