@@ -1167,6 +1167,7 @@ if (annyang) {
         
     });
     $('#addTodo').click(function() {
+    	console.log('add: todo'+$('#todo_description').val())
         $.post('/patient/{{ patient.id }}/add_problem/', {'todo': $('#todo_description').val()}, function (data) {
 	            updateProblems();
 	            $('#todo_description').val($('todo_description').attr('default'));
