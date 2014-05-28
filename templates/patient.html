@@ -584,7 +584,7 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
             	
                 if (data[j]['problem_name'] != problem['problem_name']) {
                     console.log(problem['effected_by'][data[j]['problem_id'].toString()]);
-                    console.log("problem['effected_by']['"+data[j]['problem_id'].toString()+"'])";
+                    //console.log("problem['effected_by']['"+data[j]['problem_id'].toString()+"'])";
                     if (problem['effected_by'][data[j]['problem_id'].toString()] == true) {
 	                checked = ' checked ';
 	            } else {
