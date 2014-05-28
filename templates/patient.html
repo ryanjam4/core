@@ -613,7 +613,8 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
 	                var checked = '';
 	            }
                     select += '<li>';
-            	    select += data[j]['problem_name'] + '<input type="checkbox" '+checked+' />';
+            	    select += data[j]['problem_name'] + '<input type="checkbox" '+checked+' target="'+data[j]['problem_id']+'" ';
+            	    select += 'id="'+problem['problem_id']+'" attr="affects" />';
             	    select += '</li>';
                 }
             }
