@@ -312,6 +312,11 @@ def submit_data_for_problem(request, problem_id):
         note.save()
         problem.notes.add(note)
         problem.save()
+    elif request.POST['type'] == 'problem_start_date':
+        problem = Problem.objects.get(id=problem_id)
+        import time
+        problem.start_date = time.strptime(request.POST['data'], "%m/%d/%y")
+        problem.save()
     elif request.POST['type'] == 'note_for_goal':
         goal = Goal.objects.get(id=problem_id)
         note = TextNote(by=UserProfile.objects.get(user=request.user).role, note=request.POST['data'])
