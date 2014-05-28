@@ -1159,7 +1159,6 @@ if (annyang) {
         $(this).removeClass();
         $(this).addClass('show_problem');
         $.get('/get_problems/{{ patient.id }}/', {'new_status': '{"action": "hide"}'});
-
     });
     $('body').on('click', '.hide_goal', function () {
         //window.current_problem = null;
