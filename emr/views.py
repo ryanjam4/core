@@ -218,9 +218,9 @@ def get_patient_data(request, patient_id):
             if i == problem:
                 continue
             elif ProblemRelationship.objects.filter(source=i, target=problem):
-                effected_by[i.id] = True
+                effected_by[int(i.id)] = True
             else:
-                effected_by[i.id] = False
+                effected_by[int(i.id)] = False
         d['effected_by'] = effected_by
         d['affects'] = [{'problem_id': g.id, 'problem_name': g.problem_name} for g in problem.get_children()]
         d['problem_name'] = problem.problem_name
