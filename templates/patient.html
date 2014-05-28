@@ -933,8 +933,12 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
             status += 'Is accomplished</li>';
             status += '</ul>';
             
-            
-            html = '<div id="goal_'+goal['goal_id']+'" class="'+goal['is_controlled']+'">'+goal['goal'];
+            if (goal['for_problem'] == '') {
+            	var for_problem = '';
+            } else {
+            	var for_problem = ' (for problem '+goal['for_problem']+')';
+            }
+            html = '<div id="goal_'+goal['goal_id']+'" class="'+goal['is_controlled']+'">'+goal['goal']+for_problem;
             html += ' <input type="button" target="goal_data_'+goal['goal_id']+'" goal="'+goal['goal_id']+'" class="show_nonproblem_goal" value="Show goal" />';
             html += '</div>';
             html += '<div class="goal_data" id="goal_data_'+goal['goal_id']+'">'+status;
