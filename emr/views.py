@@ -406,6 +406,9 @@ def add_problem(request, patient_id):
     elif 'goal' in request.POST:
         goal = Goal(patient=User.objects.get(id=patient_id), goal=request.POST['goal'])
         goal.save()
+    elif 'todo' in request.POST:
+        todo = Todo(patient=User.objects.get(id=patient_id), todo=request.POST['todo'])
+        todo.save()
     return HttpResponse('added')
 
 @login_required
