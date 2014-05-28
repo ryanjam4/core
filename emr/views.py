@@ -290,7 +290,7 @@ def get_patient_data(request, patient_id):
         d = {}
         d['for_problem'] = todo.problem.problem_name if todo.problem else ''
         d['todo_id'] = todo.id
-        d['todo'] = goal.goal
+        d['todo'] = todo.todo
         d['accomplished'] = goal.accomplished
         data['todos']['not_accomplished'].append(d)
         
