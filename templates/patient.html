@@ -583,7 +583,7 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
             for (var j=0; j<data.length;j++) {
             	
                 if (data[j]['problem_name'] != problem['problem_name']) {
-                    if (problem['effected_by][data[j]['id']] == true) {
+                    if (problem['effected_by'][data[j]['id']] == true) {
 	                checked = ' checked ';
 	            } else {
 	                checked = '';
