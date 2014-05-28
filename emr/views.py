@@ -313,6 +313,7 @@ def submit_data_for_problem(request, problem_id):
         problem.notes.add(note)
         problem.save()
     elif request.POST['type'] == 'problem_start_date':
+        print 'problem_start_date: '+str(request.POST)
         problem = Problem.objects.get(id=problem_id)
         import time
         problem.start_date = time.strptime(request.POST['data'], "%m/%d/%y")
