@@ -1011,11 +1011,12 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
             status += '<li><input type="checkbox" attr="goal" id="'+todo['todo_id']+'" '+checked+'/> ';
             status += 'Is accomplished</li>';
             status += '</ul>';
-            
-            html = '<div id="goal_'+goal['goal_id']+'" class="'+todo['todo_id']+'">'+todo['todo']+for_problem;
-            html += ' <input type="button" target="goal_data_'+todo['todo_id']+'" goal="'+todo['todo_id']+'" class="show_nonproblem_todo" value="Show todo" />';
-            html += '</div>';
-            html += '<div class="goal_data" id="goal_data_'+todo['todo_id']+'">'+status;
+            if (todo['for_problem'] == '') {
+            	var for_problem = '';
+            } else {
+            	var for_problem = ' (for problem '+todo['for_problem']+')';
+            }
+            html = '<div><input type="checkbox" /> '+todo['todo']+for_problem;
             html += '</div>';
             $('#todos').append(html)
         }
