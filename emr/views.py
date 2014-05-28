@@ -262,11 +262,13 @@ def get_patient_data(request, patient_id):
             pass
     for goal in Goal.objects.filter(patient=patient, accomplished=False, problem=None).order_by('goal'):
         d = {}
+        d['for_problem'] = goal.problem.problem_name if goal.problem else ''
         d['goal_id'] = goal.id
         d['goal'] = goal.goal
         d['start_date'] = goal.start_date.strftime('%m/%d/%y')
         d['is_controlled'] = goal.is_controlled
         d['accomplished'] = goal.accomplished
+        d['notes'] = [{'note': n.note} for n in goal.notes.all().order_by('-datetime')]
         data['goals']['not_accomplished'].append(d)
         
     return HttpResponse(json.dumps(data), content_type="application/json")
