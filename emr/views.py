@@ -286,7 +286,7 @@ def get_patient_data(request, patient_id):
         d['accomplished'] = goal.accomplished
         d['notes'] = [{'note': n.note} for n in goal.notes.all().order_by('-datetime')]
         data['goals']['not_accomplished'].append(d)
-    for todo in Todo.objects.filter(patient=patient, accomplished=False).order_by('todo'):
+    for todo in ToDo.objects.filter(patient=patient, accomplished=False).order_by('todo'):
         d = {}
         d['for_problem'] = todo.problem.problem_name if todo.problem else ''
         d['todo_id'] = todo.id
