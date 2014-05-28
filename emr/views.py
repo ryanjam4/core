@@ -212,7 +212,7 @@ def get_patient_data(request, patient_id):
         # We store the data for this problem in a dictionary called "d"
         d = {}
         d['problem_id'] = problem.id
-        d['start_date'] = problem.start_date.strftime('%m/%d/%y')
+        d['start_date'] = problem.start_date.strftime('%m/%d/%Y')
         d['effected_by'] = problem.parent.id if problem.parent else None
         d['affects'] = [{'problem_id': g.id, 'problem_name': g.problem_name} for g in problem.get_children()]
         d['problem_name'] = problem.problem_name
@@ -221,7 +221,7 @@ def get_patient_data(request, patient_id):
         d['is_controlled'] = problem.is_controlled
         d['is_authenticated'] = problem.authenticated
         d['is_active'] = problem.is_active
-        d['goals'] = [{'id': g.id, 'start_date': g.start_date.strftime('%m/%d/%y'), 'goal': g.goal, 'is_controlled': g.is_controlled, 'accomplished': g.accomplished, 'notes': [{'note': n.note} for n in g.notes.all().order_by('-datetime')]} for g in Goal.objects.filter(problem=problem, accomplished=False)]
+        d['goals'] = [{'id': g.id, 'start_date': g.start_date.strftime('%m/%d/%Y'), 'goal': g.goal, 'is_controlled': g.is_controlled, 'accomplished': g.accomplished, 'notes': [{'note': n.note} for n in g.notes.all().order_by('-datetime')]} for g in Goal.objects.filter(problem=problem, accomplished=False)]
         d['todos'] = [{'todo': g.todo, 'id': g.id, 'accomplished': g.accomplished} for g in ToDo.objects.filter(problem=problem, accomplished=False)]
         d['notes'] = {'by_physician': [{'note': g.note} for g in TextNote.objects.filter(problem=problem, by__in=['physician', 'admin']).order_by('-datetime')], 'by_patient': [{'note': g.note} for g in TextNote.objects.filter(problem=problem, by='patient').order_by('-datetime')], 'all': [{'by': g.by, 'note': g.note} for g in TextNote.objects.filter(problem=problem)]}
         data['problems']['is_active'].append(d)
@@ -238,7 +238,7 @@ def get_patient_data(request, patient_id):
         # We store the data for this problem in a dictionary called "d"
         d = {}
         d['problem_id'] = problem.id
-        d['start_date'] = problem.start_date.strftime('%m/%d/%y')
+        d['start_date'] = problem.start_date.strftime('%m/%d/%Y')
         d['effected_by'] = problem.parent.id if problem.parent else None
         d['affects'] = [{'problem_id': g.id, 'problem_name': g.problem_name} for g in problem.get_children()]
         d['problem_name'] = problem.problem_name
@@ -247,7 +247,7 @@ def get_patient_data(request, patient_id):
         d['is_controlled'] = problem.is_controlled
         d['is_authenticated'] = problem.authenticated
         d['is_active'] = problem.is_active
-        d['goals'] = [{'id': g.id, 'start_date': g.start_date.strftime('%m/%d/%y'), 'goal': g.goal, 'is_controlled': g.is_controlled, 'accomplished': g.accomplished, 'notes': [{'note': n.note} for n in g.notes.all().order_by('-datetime')]} for g in Goal.objects.filter(problem=problem, accomplished=False)]
+        d['goals'] = [{'id': g.id, 'start_date': g.start_date.strftime('%m/%d/%Y'), 'goal': g.goal, 'is_controlled': g.is_controlled, 'accomplished': g.accomplished, 'notes': [{'note': n.note} for n in g.notes.all().order_by('-datetime')]} for g in Goal.objects.filter(problem=problem, accomplished=False)]
         d['todos'] = [{'todo': g.todo, 'id': g.id, 'accomplished': g.accomplished} for g in ToDo.objects.filter(problem=problem, accomplished=False)]
         d['notes'] = {'by_physician': [{'note': g.note} for g in TextNote.objects.filter(problem=problem, by__in=['physician', 'admin']).order_by('-datetime')], 'by_patient': [{'note': g.note} for g in TextNote.objects.filter(problem=problem, by='patient').order_by('-datetime')], 'all': [{'by': g.by, 'note': g.note} for g in TextNote.objects.filter(problem=problem)]}
         data['problems']['not_active'].append(d)
@@ -316,7 +316,7 @@ def submit_data_for_problem(request, problem_id):
         print 'problem_start_date: '+str(request.POST)
         problem = Problem.objects.get(id=problem_id)
         from datetime import datetime
-        problem.start_date = datetime.strptime(request.POST['data'], "%m/%d/%y")
+        problem.start_date = datetime.strptime(request.POST['data'], "%m/%d/%Y")
         problem.save()
     elif request.POST['type'] == 'note_for_goal':
         goal = Goal.objects.get(id=problem_id)
