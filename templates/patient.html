@@ -916,6 +916,7 @@ $.get('/get_problems/{{ patient.id }}/', {'tracking_id': tracking_id}, function 
         for (var i=0;i<goals.length;i++) {
             var goal = goals[i];
             status = '<ul>';
+            status += '<li><strong>Start date:</strong> '+goal['start_date']+'</li>';
             if (goal['is_controlled'] == true) {
                 checked = ' checked ';
             } else {
