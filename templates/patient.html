@@ -988,6 +988,7 @@ $(document).on('click', '.submit_data', function() {
     var type = $(this).attr('object_type');
     var val = $('#'+$(this).attr('target')).val();
     if (val != '') { // send to server }
+    console.log(JSON.stringify({'parent': $(this).attr('parent'), 'type': $(this).attr('object_type'), 'data': val}));
     $.post('/submit_data_for_problem/'+$(this).attr('parent')+'/', {'type': $(this).attr('object_type'), 'data': val}, function(data) {
         $('#'+type+'_'+parent_id).append('<li>'+val+'</li>');
         window.goal = data;
